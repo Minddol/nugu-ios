@@ -1176,7 +1176,6 @@
 		1FD4A98223A22302002EB56D /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				1F2E803623966B2900569C59 /* KeywordDetector */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -1645,6 +1644,7 @@
 		1FFFF3422375707000C9A177 /* AutomaticSpeechRecognition */ = {
 			isa = PBXGroup;
 			children = (
+				1F2E803623966B2900569C59 /* KeywordDetector */,
 				7303C68223C5BF5E00610343 /* EndPointDetector */,
 				1FFFF3432375707000C9A177 /* ASRAgent.swift */,
 				1FFFF3482375707000C9A177 /* ASRAgent+Event.swift */,
