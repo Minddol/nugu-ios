@@ -33,9 +33,6 @@
 		1F2E800E238FCD4400569C59 /* NuguLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FFFF01723753F7D00C9A177 /* NuguLoginKit.framework */; };
 		1F2E800F238FCD4400569C59 /* NuguUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FFFF02423753F8A00C9A177 /* NuguUIKit.framework */; };
 		1F2E80142394E60100569C59 /* TycheKeywordDetectorEngine+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E80132394E60100569C59 /* TycheKeywordDetectorEngine+State.swift */; };
-		1F2E803923966D9D00569C59 /* KeywordSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E803823966D9D00569C59 /* KeywordSource.swift */; };
-		1F2E803E2397A27300569C59 /* KeywordDetectorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E803D2397A27300569C59 /* KeywordDetectorState.swift */; };
-		1F2E80402397A2E500569C59 /* KeywordDetectorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E803F2397A2E500569C59 /* KeywordDetectorDelegate.swift */; };
 		1F31FD7A241F5774009593EB /* TextAgentSourceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5DD4B62410CB8600719FBC /* TextAgentSourceItem.swift */; };
 		1F31FD7C2424CBD8009593EB /* UpstreamSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F31FD7B2424CBD8009593EB /* UpstreamSpec.swift */; };
 		1F5DD4AA240CEAF500719FBC /* AudioPlayerAgentSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5DD4A9240CEAF500719FBC /* AudioPlayerAgentSpec.swift */; };
@@ -282,7 +279,6 @@
 		7315307523E1248300F843C3 /* TTSAgentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF2612375703000C9A177 /* TTSAgentDelegate.swift */; };
 		7315307623E1248300F843C3 /* TTSState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF25F2375703000C9A177 /* TTSState.swift */; };
 		7315307723E1248300F843C3 /* TTSResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF2602375703000C9A177 /* TTSResult.swift */; };
-		7330CD84237A77D800FCD6E9 /* KeywordDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330CD81237A77D800FCD6E9 /* KeywordDetector.swift */; };
 		7330CD88237A77F900FCD6E9 /* TycheEndPointDetectorEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330CD85237A77F900FCD6E9 /* TycheEndPointDetectorEngineDelegate.swift */; };
 		7330CD89237A77F900FCD6E9 /* TycheEndpointDetectorEngine+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330CD86237A77F900FCD6E9 /* TycheEndpointDetectorEngine+State.swift */; };
 		7330CD8A237A77F900FCD6E9 /* TycheEndPointDetectorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330CD87237A77F900FCD6E9 /* TycheEndPointDetectorEngine.swift */; };
@@ -323,6 +319,11 @@
 		7E6450F92421D82300D91129 /* StreamDataDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6450F82421D82300D91129 /* StreamDataDelegate.swift */; };
 		7E6A0B03240DEC7D00C7A19E /* PlaySyncProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6A0B02240DEC7D00C7A19E /* PlaySyncProperty.swift */; };
 		7E98BAD2239A312500B9582D /* AuthorizationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF2A02375703000C9A177 /* AuthorizationStore.swift */; };
+		7EBB2EB12444162800FBBBEA /* KeywordDetectorResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB2EB02444162800FBBBEA /* KeywordDetectorResult.swift */; };
+		7EBB2EB22444168B00FBBBEA /* KeywordDetectorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E803F2397A2E500569C59 /* KeywordDetectorDelegate.swift */; };
+		7EBB2EB52444169100FBBBEA /* KeywordDetectorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E803D2397A27300569C59 /* KeywordDetectorState.swift */; };
+		7EBB2EB62444169100FBBBEA /* KeywordDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330CD81237A77D800FCD6E9 /* KeywordDetector.swift */; };
+		7EBB2EB72444169100FBBBEA /* KeywordSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E803823966D9D00569C59 /* KeywordSource.swift */; };
 		7EDCF2A72384FE88006F96B6 /* StreamDataRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDCF2A62384FE88006F96B6 /* StreamDataRouter.swift */; };
 		7EF12B1323C41F5F0000E158 /* DialogStateDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF28E2375703000C9A177 /* DialogStateDelegate.swift */; };
 		7EF12B1423C41F5F0000E158 /* DialogState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF28D2375703000C9A177 /* DialogState.swift */; };
@@ -839,6 +840,7 @@
 		7E6A0B02240DEC7D00C7A19E /* PlaySyncProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySyncProperty.swift; sourceTree = "<group>"; };
 		7E98BACD239A1F7C00B9582D /* AuthorizationStoreDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationStoreDelegate.swift; sourceTree = "<group>"; };
 		7E98BACF239A2ED700B9582D /* AuthorizationStoreable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationStoreable.swift; sourceTree = "<group>"; };
+		7EBB2EB02444162800FBBBEA /* KeywordDetectorResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordDetectorResult.swift; sourceTree = "<group>"; };
 		7EDCF2A62384FE88006F96B6 /* StreamDataRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamDataRouter.swift; sourceTree = "<group>"; };
 		7EF12B2223C822520000E158 /* DisplayClosePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayClosePayload.swift; sourceTree = "<group>"; };
 		A135E662241F1925006F82E5 /* AudioPlayerAgent+SettingsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioPlayerAgent+SettingsEvent.swift"; sourceTree = "<group>"; };
@@ -1072,6 +1074,7 @@
 				1F2E803D2397A27300569C59 /* KeywordDetectorState.swift */,
 				7330CD81237A77D800FCD6E9 /* KeywordDetector.swift */,
 				1F2E803823966D9D00569C59 /* KeywordSource.swift */,
+				7EBB2EB02444162800FBBBEA /* KeywordDetectorResult.swift */,
 			);
 			path = KeywordDetector;
 			sourceTree = "<group>";
@@ -2999,15 +3002,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7EF12B1323C41F5F0000E158 /* DialogStateDelegate.swift in Sources */,
-				1F2E803923966D9D00569C59 /* KeywordSource.swift in Sources */,
-				1F2E803E2397A27300569C59 /* KeywordDetectorState.swift in Sources */,
 				7EF12B1423C41F5F0000E158 /* DialogState.swift in Sources */,
-				1F2E80402397A2E500569C59 /* KeywordDetectorDelegate.swift in Sources */,
 				7386DA9923CF279C002BF24C /* NuguClientDelegate.swift in Sources */,
 				1FD1CFF723BDC0660000FB8C /* DialogStateAggregator.swift in Sources */,
 				1FFFF3DE2375735E00C9A177 /* NuguClient.swift in Sources */,
 				1FD4A97C23A0C2FD002EB56D /* NuguClientKit.swift in Sources */,
-				7330CD84237A77D800FCD6E9 /* KeywordDetector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3159,6 +3158,8 @@
 				73152FC423E0414F00F843C3 /* SystemAgentExceptionItem.swift in Sources */,
 				73152FC523E0415400F843C3 /* TTSAgent.swift in Sources */,
 				7315307723E1248300F843C3 /* TTSResult.swift in Sources */,
+				7EBB2EB72444169100FBBBEA /* KeywordSource.swift in Sources */,
+				7EBB2EB22444168B00FBBBEA /* KeywordDetectorDelegate.swift in Sources */,
 				7315305223E1246F00F843C3 /* DisplayTemplate.swift in Sources */,
 				7315307323E1248300F843C3 /* SystemAgentExceptionCode.swift in Sources */,
 				A135E669241F3287006F82E5 /* AudioPlayerDisplayRepeat.swift in Sources */,
@@ -3176,6 +3177,7 @@
 				73152FCB23E0415B00F843C3 /* DisplayAgent+Event.swift in Sources */,
 				7315305323E1246F00F843C3 /* TextAgentProtocol.swift in Sources */,
 				73152FA923E0412D00F843C3 /* ExtensionAgent+Event.swift in Sources */,
+				7EBB2EB62444169100FBBBEA /* KeywordDetector.swift in Sources */,
 				73152FE623E0491C00F843C3 /* NSObject+Rx.swift in Sources */,
 				7315306523E1248300F843C3 /* AudioPlayerDisplayTemplate.swift in Sources */,
 				73152FD123E0416600F843C3 /* LocationAgent.swift in Sources */,
@@ -3191,6 +3193,7 @@
 				7315306B23E1248300F843C3 /* ASRAgentProtocol.swift in Sources */,
 				73152FB023E0413F00F843C3 /* AudioPlayerDisplayManageable.swift in Sources */,
 				1F31FD7A241F5774009593EB /* TextAgentSourceItem.swift in Sources */,
+				7EBB2EB52444169100FBBBEA /* KeywordDetectorState.swift in Sources */,
 				73152FDE23E045C700F843C3 /* TimeUUID.swift in Sources */,
 				7E0E0B082437077F00198FCB /* EndPointDetectable.swift in Sources */,
 				73152FC023E0414700F843C3 /* ASRNotifyResult.swift in Sources */,
@@ -3201,6 +3204,7 @@
 				7315305623E1246F00F843C3 /* LocationAgentProtocol.swift in Sources */,
 				7334F47523FD170200EA5E58 /* Eventable+makeEventMessage.swift in Sources */,
 				73152FB223E0413F00F843C3 /* AudioPlayerDisplayRenderingInfo.swift in Sources */,
+				7EBB2EB12444162800FBBBEA /* KeywordDetectorResult.swift in Sources */,
 				7315306A23E1248300F843C3 /* AudioPlayerState.swift in Sources */,
 				73152FC123E0414F00F843C3 /* SystemAgent.swift in Sources */,
 				7315305E23E1246F00F843C3 /* CapabilityAgentProperty.swift in Sources */,

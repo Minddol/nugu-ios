@@ -1,8 +1,8 @@
 //
-//  KeywordDetectorDelegate.swift
+//  KeywordDetectorResult.swift
 //  NuguAgents
 //
-//  Created by DCs-OfficeMBP on 14/05/2019.
+//  Created by MinChul Lee on 2020/04/13.
 //  Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,8 +20,10 @@
 
 import Foundation
 
-public protocol KeywordDetectorDelegate: class {
-    func keywordDetectorDidDetect(result: KeywordDetectorResult)
-    func keywordDetectorDidError(_ error: Error)
-    func keywordDetectorStateDidChange(_ state: KeywordDetectorState)
+public struct KeywordDetectorResult {
+    public let keyword: String
+    public let data: Data
+    public let start: Int
+    public let end: Int
+    public let detection: Int
 }

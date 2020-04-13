@@ -54,8 +54,8 @@ public struct ASROptions {
         self.endPointing = endPointing
     }
 
-    public enum Initiator: Equatable {
-        case wakeUpKeyword(keyword: String, data: Data, start: Int, end: Int, detection: Int)
+    public enum Initiator {
+        case wakeUpKeyword(result: KeywordDetectorResult)
         case user
         case scenario
     }

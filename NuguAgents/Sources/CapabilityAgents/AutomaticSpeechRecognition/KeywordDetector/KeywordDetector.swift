@@ -1,6 +1,6 @@
 //
 //  KeywordDetector.swift
-//  NuguClientKit
+//  NuguAgents
 //
 //  Created by childc on 2019/11/11.
 //  Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
@@ -68,7 +68,7 @@ public class KeywordDetector {
 
 extension KeywordDetector: TycheKeywordDetectorEngineDelegate {
     public func tycheKeywordDetectorEngineDidDetect(data: Data, start: Int, end: Int, detection: Int) {
-        delegate?.keywordDetectorDidDetect(keyword: keyword, data: data, start: start, end: end, detection: detection)
+        delegate?.keywordDetectorDidDetect(result: KeywordDetectorResult(keyword: keyword, data: data, start: start, end: end, detection: detection))
     }
     
     public func tycheKeywordDetectorEngineDidError(_ error: Error) {

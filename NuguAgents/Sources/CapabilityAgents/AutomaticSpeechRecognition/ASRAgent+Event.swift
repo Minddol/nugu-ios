@@ -62,17 +62,17 @@ extension ASRAgent.Event: Eventable {
                 ]
             ]
             
-            if case let .wakeUpKeyword(keyword, _, start, end, detection) = options.initiator {
-                var wakeup: [String: AnyHashable] = ["word": keyword]
+            if case let .wakeUpKeyword(result) = options.initiator {
+                var wakeup: [String: AnyHashable] = ["word": result.keyword]
                 if options.endPointing == .server {
                     /**
                      KeywordDetector use 16k mono (bit depth: 16).
                      so, You can calculate sample count by (dataCount / 2)
                      */
                     let boundary: [String: AnyHashable] = [
-                        "start": start / 2,
-                        "end": end / 2,
-                        "detection": detection / 2,
+                        "start": result.start / 2,
+                        "end": result.end / 2,
+                        "detection": result.detection / 2,
                         "metric": "sample"
                     ]
                     wakeup["boundary"] = boundary
