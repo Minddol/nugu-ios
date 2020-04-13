@@ -85,7 +85,9 @@ extension NuguCentralManager {
         
         // Set Last WakeUp Keyword
         // If you don't want to use saved wakeup-word, don't need to be implemented
-        setWakeUpWord(rawValue: UserDefaults.Standard.wakeUpWord)
+        if let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord) {
+            setKeyword(keyword)
+        }
     }
     
     func disable() {
@@ -338,37 +340,18 @@ extension NuguCentralManager {
         client.keywordDetector.stop()
     }
     
-    func setWakeUpWord(rawValue wakeUpWord: Int) {
-        switch wakeUpWord {
-        case Keyword.aria.rawValue:
-            guard
-                let netFile = Bundle.main.url(forResource: "skt_trigger_am_aria", withExtension: "raw"),
-                let searchFile = Bundle.main.url(forResource: "skt_trigger_search_aria", withExtension: "raw") else {
-                    log.debug("keywordSource is invalid")
-                    return
-            }
-            
-            client.keywordDetector.keywordSource = KeywordSource(
-                keyword: .aria,
-                netFileUrl: netFile,
-                searchFileUrl: searchFile
-            )
-        case Keyword.tinkerbell.rawValue:
-            guard
-                let netFile = Bundle.main.url(forResource: "skt_trigger_am_tinkerbell", withExtension: "raw"),
-                let searchFile = Bundle.main.url(forResource: "skt_trigger_search_tinkerbell", withExtension: "raw") else {
-                    log.debug("keywordSource is invalid")
-                    return
-            }
-            
-            client.keywordDetector.keywordSource = KeywordSource(
-                keyword: .tinkerbell,
-                netFileUrl: netFile,
-                searchFileUrl: searchFile
-            )
-        default:
-            return
+    func setKeyword(_ keyword: Keyword) {
+        guard let netFile = keyword.netFile,
+            let searchFile = keyword.searchFile else {
+                log.debug("keywordSource is invalid")
+                return
         }
+        
+        client.keywordDetector.keywordSource = KeywordSource(
+            keyword: keyword.description,
+            netFileUrl: netFile,
+            searchFileUrl: searchFile
+        )
     }
 }
 

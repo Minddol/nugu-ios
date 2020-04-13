@@ -392,8 +392,7 @@ private extension MainViewController {
 extension MainViewController: KeywordDetectorDelegate {
     func keywordDetectorDidDetect(result: KeywordDetectorResult) {
         DispatchQueue.main.async { [weak self] in
-            self?.presentVoiceChrome(initiator: .wakeUpKeyword(result: result)
-            )
+            self?.presentVoiceChrome(initiator: .wakeUpKeyword(result: result))
         }
     }
     

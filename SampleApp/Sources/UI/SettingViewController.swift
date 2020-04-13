@@ -88,7 +88,7 @@ private extension SettingViewController {
                 style: .default) { [weak self] _ in
                     self?.wakeupWordButton.setTitle(keyword.description, for: .normal)
                     
-                    NuguCentralManager.shared.setWakeUpWord(rawValue: keyword.rawValue)
+                    NuguCentralManager.shared.setKeyword(keyword)
                     UserDefaults.Standard.wakeUpWord = keyword.rawValue
             }
             
