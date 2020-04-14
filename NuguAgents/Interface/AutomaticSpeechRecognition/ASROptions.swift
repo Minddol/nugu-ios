@@ -55,7 +55,7 @@ public struct ASROptions {
     }
 
     public enum Initiator {
-        case wakeUpKeyword(result: KeywordDetectorResult)
+        case keyword(result: KeywordDetectorResult)
         case user
         case scenario
     }

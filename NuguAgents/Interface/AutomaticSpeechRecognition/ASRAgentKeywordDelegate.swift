@@ -1,8 +1,8 @@
 //
-//  EndPointDetectorState.swift
+//  ASRAgentKeywordDelegate.swift
 //  NuguAgents
 //
-//  Created by yonghoonKwon on 16/08/2019.
+//  Created by MinChul Lee on 2020/04/13.
 //  Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,22 +20,7 @@
 
 import Foundation
 
-/// <#Description#>
-enum EndPointDetectorState {
-    /// <#Description#>
-    case idle
-    /// <#Description#>
-    case listening
-    /// <#Description#>
-    case start
-    /// <#Description#>
-    case end
-    /// <#Description#>
-    case timeout
-    /// <#Description#>
-    case reachToMaxLength
-    /// <#Description#>
-    case finish
-    /// <#Description#>
-    case unknown
+public protocol ASRAgentKeywordDelegate: class {
+    func asrAgentKeywordDidDetect(keyword: String)
+    func asrAgentKeywrodDidChange(state: KeywordDetectorState)
 }

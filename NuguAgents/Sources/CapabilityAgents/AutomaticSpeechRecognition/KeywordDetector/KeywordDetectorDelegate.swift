@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol KeywordDetectorDelegate: class {
+protocol KeywordDetectorDelegate: class {
     func keywordDetectorDidDetect(result: KeywordDetectorResult)
     func keywordDetectorDidError(_ error: Error)
     func keywordDetectorStateDidChange(_ state: KeywordDetectorState)

@@ -72,15 +72,6 @@ public class NuguClient {
      */
     public var sharedAudioStream: AudioStreamable = AudioStream(capacity: 300)
     
-    // keywordDetector
-    public private(set) lazy var keywordDetector: KeywordDetector = {
-        let keywordDetector =  KeywordDetector()
-        keywordDetector.audioStream = sharedAudioStream
-        contextManager.add(delegate: keywordDetector)
-        
-        return keywordDetector
-    }()
-    
     // private
     private let inputControlQueue = DispatchQueue(label: "com.sktelecom.romaine.input_control_queue")
     private var inputControlWorkItem: DispatchWorkItem?

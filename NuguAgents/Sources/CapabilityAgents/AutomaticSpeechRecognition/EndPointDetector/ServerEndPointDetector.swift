@@ -25,7 +25,7 @@ import JadeMarble
 
 import RxSwift
 
-public class ServerEndPointDetector: NSObject, EndPointDetectable {
+class ServerEndPointDetector: NSObject, EndPointDetectable {
     public weak var delegate: EndPointDetectorDelegate?
     
     private var boundStreams: AudioBoundStreams?

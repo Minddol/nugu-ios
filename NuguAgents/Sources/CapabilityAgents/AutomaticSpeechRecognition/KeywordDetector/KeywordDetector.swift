@@ -23,7 +23,7 @@ import Foundation
 import NuguCore
 import KeenSense
 
-public class KeywordDetector {
+class KeywordDetector {
     private var boundStreams: AudioBoundStreams?
     private let engine = TycheKeywordDetectorEngine()
     

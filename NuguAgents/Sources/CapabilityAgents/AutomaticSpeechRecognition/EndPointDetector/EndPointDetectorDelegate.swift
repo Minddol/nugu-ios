@@ -21,7 +21,7 @@
 import Foundation
 
 /// <#Description#>
-public protocol EndPointDetectorDelegate: class {
+protocol EndPointDetectorDelegate: class {
     /// <#Description#>
     /// - Parameter state: <#state description#>
     func endPointDetectorStateChanged(_ state: EndPointDetectorState)

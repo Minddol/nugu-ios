@@ -158,7 +158,7 @@ private extension MainViewController {
         NuguAudioSessionManager.shared.updateAudioSession()
         
         // Add delegates
-        NuguCentralManager.shared.client.keywordDetector.delegate = self
+        NuguCentralManager.shared.client.asrAgent.keywordDelegate = self
         NuguCentralManager.shared.client.dialogStateAggregator.add(delegate: self)
         NuguCentralManager.shared.client.asrAgent.add(delegate: self)
         NuguCentralManager.shared.client.textAgent.delegate = self
@@ -197,11 +197,6 @@ private extension MainViewController {
         
         // Enable Nugu SDK
         NuguCentralManager.shared.enable()
-        
-        refreshWakeUpDetector()
-    }
-    
-    func refreshWakeUpDetector() {
         NuguCentralManager.shared.refreshWakeUpDetector()
     }
 }
@@ -239,7 +234,7 @@ private extension MainViewController {
         NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
             guard let self = self else { return }
             guard isGranted else {
-                log.error(SampleAppError.recordPermissionError)
+                log.error("Record permission denied")
                 return
             }
             guard let epdFile = Bundle.main.url(forResource: "skt_epd_model", withExtension: "raw") else {
@@ -389,16 +384,10 @@ private extension MainViewController {
 
 // MARK: - KeywordDetectorDelegate
 
-extension MainViewController: KeywordDetectorDelegate {
-    func keywordDetectorDidDetect(result: KeywordDetectorResult) {
-        DispatchQueue.main.async { [weak self] in
-            self?.presentVoiceChrome(initiator: .wakeUpKeyword(result: result))
-        }
-    }
+extension MainViewController: ASRAgentKeywordDelegate {
+    func asrAgentKeywordDidDetect(keyword: String) {}
     
-    func keywordDetectorDidStop() {}
-    
-    func keywordDetectorStateDidChange(_ state: KeywordDetectorState) {
+    func asrAgentKeywrodDidChange(state: KeywordDetectorState) {
         switch state {
         case .active:
             DispatchQueue.main.async { [weak self] in
@@ -410,8 +399,6 @@ extension MainViewController: KeywordDetectorDelegate {
             }
         }
     }
-    
-    func keywordDetectorDidError(_ error: Error) {}
 }
 
 // MARK: - DialogStateDelegate
@@ -456,16 +443,7 @@ extension MainViewController: DialogStateDelegate {
 // MARK: - AutomaticSpeechRecognitionDelegate
 
 extension MainViewController: ASRAgentDelegate {
-    func asrAgentDidChange(state: ASRState, expectSpeech: ASRExpectSpeech?) {
-        switch state {
-        case .idle:
-            refreshWakeUpDetector()
-        case .listening:
-            NuguCentralManager.shared.stopWakeUpDetector()
-        default:
-            break
-        }
-    }
+    func asrAgentDidChange(state: ASRState, expectSpeech: ASRExpectSpeech?) {}
     
     func asrAgentDidReceive(result: ASRResult, dialogRequestId: String) {
         switch result {

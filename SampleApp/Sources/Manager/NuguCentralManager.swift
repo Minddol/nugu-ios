@@ -82,12 +82,6 @@ extension NuguCentralManager {
         }
 
         NuguLocationManager.shared.startUpdatingLocation()
-        
-        // Set Last WakeUp Keyword
-        // If you don't want to use saved wakeup-word, don't need to be implemented
-        if let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord) {
-            setKeyword(keyword)
-        }
     }
     
     func disable() {
@@ -310,48 +304,43 @@ extension NuguCentralManager {
     func refreshWakeUpDetector() {
         DispatchQueue.main.async { [weak self] in
             // Should check application state, because iOS audio input can not be start using in background state
-            guard UIApplication.shared.applicationState == .active else { return }
-            
-            guard UserDefaults.Standard.useWakeUpDetector else {
-                self?.stopWakeUpDetector()
-                return
+            guard UIApplication.shared.applicationState == .active,
+                UserDefaults.Standard.useWakeUpDetector else {
+                    self?.stopWakeUpDetector()
+                    return
             }
             
-            self?.startWakeUpDetector { (result) in
-                if case let .failure(error) = result {
-                    log.debug("Failed to start WakeUp-Detector with reason: \(error)")
-                }
-            }
+            self?.startWakeUpDetector()
         }
     }
     
-    func startWakeUpDetector(completion: ((Result<Void, Error>) -> Void)? = nil) {
-        NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
-            guard let self = self else { return }
-            let result = Result<Void, Error>(catching: {
-                guard isGranted else { throw SampleAppError.recordPermissionError }
-                self.client.keywordDetector.start()
-            })
-            completion?(result)
-        }
-    }
-    
-    func stopWakeUpDetector() {
-        client.keywordDetector.stop()
-    }
-    
-    func setKeyword(_ keyword: Keyword) {
-        guard let netFile = keyword.netFile,
+    func startWakeUpDetector() {
+        guard let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord),
+            let netFile = keyword.netFile,
             let searchFile = keyword.searchFile else {
                 log.debug("keywordSource is invalid")
                 return
         }
         
-        client.keywordDetector.keywordSource = KeywordSource(
+        let keywordSource = KeywordSource(
             keyword: keyword.description,
             netFileUrl: netFile,
             searchFileUrl: searchFile
         )
+        
+        NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
+            guard let self = self else { return }
+            guard isGranted else {
+                log.error("Record permission denied")
+                return
+            }
+            
+            self.client.asrAgent.startKeywordDetector(keywordSource: keywordSource)
+        }
+    }
+    
+    func stopWakeUpDetector() {
+        client.asrAgent.stopKeywordDetector()
     }
 }
 

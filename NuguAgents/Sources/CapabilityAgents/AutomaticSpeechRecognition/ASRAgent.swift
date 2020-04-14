@@ -40,6 +40,7 @@ public final class ASRAgent: ASRAgentProtocol {
             }
         }
     }
+    public weak var keywordDelegate: ASRAgentKeywordDelegate?
     
     // Private
     private let focusManager: FocusManageable
@@ -50,6 +51,16 @@ public final class ASRAgent: ASRAgentProtocol {
     
     private var options: ASROptions = ASROptions(endPointing: .server)
     private var endPointDetector: EndPointDetectable?
+    private lazy var keywordDetector: KeywordDetector = {
+        let keywordDetector =  KeywordDetector()
+        keywordDetector.audioStream = audioStream
+        keywordDetector.delegate = self
+        contextManager.add(delegate: keywordDetector)
+        
+        return keywordDetector
+    }()
+    
+    private var keywordDetectorEnabled = false
     
     private let asrDispatchQueue = DispatchQueue(label: "com.sktelecom.romaine.asr_agent", qos: .userInitiated)
     
@@ -83,6 +94,16 @@ public final class ASRAgent: ASRAgentProtocol {
                 asrDelegates.notify { delegate in
                     delegate.asrAgentDidChange(state: asrState, expectSpeech: expectSpeech)
                 }
+            }
+            
+            // Restart `KeywordDetector`
+            switch asrState {
+            case .idle:
+                startKeywordDetector()
+            case .listening:
+                stopKeywordDetector()
+            default:
+                break
             }
         }
     }
@@ -235,6 +256,34 @@ public extension ASRAgent {
             self.asrResult = .cancel
         }
     }
+    
+    func startKeywordDetector(keywordSource: KeywordSource) {
+        asrDispatchQueue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.keywordDetectorEnabled = true
+            self.keywordDetector.keywordSource = keywordSource
+            self.startKeywordDetector()
+        }
+    }
+    
+    private func startKeywordDetector() {
+        if self.keywordDetector.state == .inactive,
+            self.asrState != .listening {
+            self.keywordDetector.start()
+        }
+    }
+    
+    func stopKeywordDetector() {
+        asrDispatchQueue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.keywordDetectorEnabled = false
+            if self.keywordDetector.state == .active {
+                self.keywordDetector.stop()
+            }
+        }
+    }
 }
 
 // MARK: - FocusChannelDelegate
@@ -281,13 +330,13 @@ extension ASRAgent: ContextInfoDelegate {
 // MARK: - EndPointDetectorDelegate
 
 extension ASRAgent: EndPointDetectorDelegate {
-    public func endPointDetectorDidError() {
+    func endPointDetectorDidError() {
         asrDispatchQueue.async { [weak self] in
             self?.asrResult = .error(ASRError.listenFailed)
         }
     }
     
-    public func endPointDetectorStateChanged(_ state: EndPointDetectorState) {
+    func endPointDetectorStateChanged(_ state: EndPointDetectorState) {
         asrDispatchQueue.async { [weak self] in
             guard let self = self else { return }
             switch self.asrState {
@@ -337,6 +386,25 @@ extension ASRAgent: EndPointDetectorDelegate {
             log.debug("request seq: \(self.attachmentSeq-1)")
         }
     }
+}
+
+// MARK: - KeywordDetectorDelegate
+
+extension ASRAgent: KeywordDetectorDelegate {
+    func keywordDetectorDidDetect(result: KeywordDetectorResult) {
+        keywordDelegate?.asrAgentKeywordDidDetect(keyword: result.keyword)
+        
+        let options = self.options.copy(initiator: .keyword(result: result))
+        self.startRecognition(options: options, by: nil)
+    }
+    
+    func keywordDetectorDidStop() {}
+    
+    func keywordDetectorStateDidChange(_ state: KeywordDetectorState) {
+        keywordDelegate?.asrAgentKeywrodDidChange(state: state)
+    }
+    
+    func keywordDetectorDidError(_ error: Error) {}
 }
 
 // MARK: - Private (Directive)
@@ -509,7 +577,7 @@ private extension ASRAgent {
             endPointDetector = ServerEndPointDetector(asrOptions: asrRequest.options)
 
             // send wake up voice data
-            if case let .wakeUpKeyword(result) = asrRequest.options.initiator {
+            if case let .keyword(result) = asrRequest.options.initiator {
                 do {
                     let speexData = try SpeexEncoder(sampleRate: Int(asrRequest.options.sampleRate), inputType: .linearPcm16).encode(data: result.data)
                     
