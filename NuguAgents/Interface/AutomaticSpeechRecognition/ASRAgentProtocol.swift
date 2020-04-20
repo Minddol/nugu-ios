@@ -25,7 +25,7 @@ import NuguCore
 /// ASR (AutomaticSpeechRecognition) is responsible for capturing the audio and delivering it to the server and receiving the result of speech recognition.
 public protocol ASRAgentProtocol: CapabilityAgentable {
     var expectSpeech: ASRExpectSpeech? { get }
-    var keywordDelegate: ASRAgentKeywordDelegate? { get set }
+    var options: ASROptions { get set }
     
     /// Adds a delegate to be notified of `ASRAgent` state changes.
     /// - Parameter delegate: The object to add.
@@ -43,23 +43,20 @@ public protocol ASRAgentProtocol: CapabilityAgentable {
     ///   - options: The options for recognition.
     ///   - completion: The completion handler to call when the request is complete.
     /// - Returns: The dialogRequestId for request.
-    @discardableResult func startRecognition(
-        options: ASROptions,
-        completion: ((StreamDataState) -> Void)?
-    ) -> String
+    @discardableResult func startRecognition(completion: ((StreamDataState) -> Void)?) -> String
     
     /// This function forces the `ASRAgent` back to the `idle` state.
     ///
     /// This function can be called in any state, and will end any Event which is currently in progress.
     func stopRecognition()
     
-    func startKeywordDetector(keywordSource: KeywordSource)
-    func stopKeywordDetector()
+    func enableKeywordDetector(keywordResource: ASRKeywordResource)
+    func disableKeywordDetector()
 }
 
 // MARK: - Default
 public extension ASRAgentProtocol {
-    @discardableResult func startRecognition(options: ASROptions) -> String {
-        return startRecognition(options: options, completion: nil)
+    @discardableResult func startRecognition() -> String {
+        return startRecognition(completion: nil)
     }
 }

@@ -77,6 +77,8 @@ extension DialogStateAggregator: ASRAgentDelegate {
     }
     
     public func asrAgentDidReceive(result: ASRResult, dialogRequestId: String) {}
+    
+    public func asrAgentDidChange(state: KeywordDetectorState) {}
 }
 
 // MARK: - TTSAgentDelegate

@@ -25,7 +25,7 @@ import NuguCore
 // MARK: - CapabilityEventAgentable
 
 extension ExtensionAgent {
-    public struct Event {
+    struct Event {
         let playServiceId: String
         let typeInfo: TypeInfo
         
@@ -40,7 +40,7 @@ extension ExtensionAgent {
 // MARK: - Eventable
 
 extension ExtensionAgent.Event: Eventable {
-    public var payload: [String: AnyHashable] {
+    var payload: [String: AnyHashable] {
         var payload: [String: AnyHashable] = [
             "playServiceId": playServiceId
         ]
@@ -53,7 +53,7 @@ extension ExtensionAgent.Event: Eventable {
         return payload
     }
     
-    public var name: String {
+    var name: String {
         switch typeInfo {
         case .actionSucceeded:
             return "ActionSucceeded"

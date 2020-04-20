@@ -26,7 +26,14 @@ struct ASRRequest {
     let contextPayload: [ContextInfo]
     let reader: AudioStreamReadable
     let dialogRequestId: String
+    let initiator: Initiator
     let options: ASROptions
     let referrerDialogRequestId: String?
     let completion: ((StreamDataState) -> Void)?
+
+    enum Initiator {
+        case keyword(result: KeywordDetectorResult)
+        case user
+        case scenario
+    }
 }

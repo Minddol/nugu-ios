@@ -27,38 +27,38 @@ class KeywordDetector {
     private var boundStreams: AudioBoundStreams?
     private let engine = TycheKeywordDetectorEngine()
     
-    public var audioStream: AudioStreamable!
-    public weak var delegate: KeywordDetectorDelegate?
+    var audioStream: AudioStreamable!
+    weak var delegate: KeywordDetectorDelegate?
     
-    public var state: KeywordDetectorState = .inactive {
+    var state: KeywordDetectorState = .inactive {
         didSet {
             delegate?.keywordDetectorStateDidChange(state)
         }
     }
     
     // Must set `keywordSource` for using `KeywordDetector`
-    public var keywordSource: KeywordSource? {
+    var keywordResource: ASRKeywordResource? {
         didSet {
-            engine.netFile = keywordSource?.netFileUrl
-            engine.searchFile = keywordSource?.searchFileUrl
+            engine.netFile = keywordResource?.netFileUrl
+            engine.searchFile = keywordResource?.searchFileUrl
         }
     }
     
     private var keyword: String {
-        keywordSource?.keyword ?? ""
+        keywordResource?.keyword ?? ""
     }
     
-    public init() {
+    init() {
         engine.delegate = self
     }
     
-    public func start() {
+    func start() {
         boundStreams?.stop()
         boundStreams = AudioBoundStreams(audioStreamReader: audioStream.makeAudioStreamReader())
         engine.start(inputStream: boundStreams!.input)
     }
     
-    public func stop() {
+    func stop() {
         boundStreams?.stop()
         engine.stop()
     }

@@ -24,7 +24,7 @@ import NuguCore
 import JadeMarble
 
 class ClientEndPointDetector: EndPointDetectable {
-    public weak var delegate: EndPointDetectorDelegate?
+    weak var delegate: EndPointDetectorDelegate?
     
     private let asrOptions: ASROptions
     private var engine: TycheEndPointDetectorEngine!
@@ -56,7 +56,7 @@ class ClientEndPointDetector: EndPointDetectable {
         )
     }
     
-    public func stop() {
+    func stop() {
         boundStreams?.stop()
         engine.stop()
     }

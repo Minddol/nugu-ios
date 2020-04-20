@@ -25,11 +25,11 @@ import NuguCore
 // MARK: - CapabilityEventAgentable
 
 extension AudioPlayerAgent {
-    public struct SettingsEvent {
+    struct SettingsEvent {
         let playServiceId: String
         let typeInfo: TypeInfo
         
-        public enum TypeInfo {
+        enum TypeInfo {
             case favoriteCommandIssued(isOn: Bool)
             case repeatCommandIssued(mode: AudioPlayerDisplayRepeat)
             case shuffleCommandIssued(isOn: Bool)
@@ -40,7 +40,7 @@ extension AudioPlayerAgent {
 // MARK: - Eventable
 
 extension AudioPlayerAgent.SettingsEvent: Eventable {
-    public var payload: [String: AnyHashable] {
+    var payload: [String: AnyHashable] {
         var eventPayload: [String: AnyHashable] = [
             "playServiceId": playServiceId
         ]
@@ -55,7 +55,7 @@ extension AudioPlayerAgent.SettingsEvent: Eventable {
         return eventPayload
     }
     
-    public var name: String {
+    var name: String {
         switch typeInfo {
         case .favoriteCommandIssued:
             return "FavoriteCommandIssued"

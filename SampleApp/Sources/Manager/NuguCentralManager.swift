@@ -43,6 +43,12 @@ final class NuguCentralManager {
         
         client.locationAgent.delegate = self
         client.systemAgent.add(systemAgentDelegate: self)
+
+        if let epdFile = Bundle.main.url(forResource: "skt_epd_model", withExtension: "raw") {
+            client.asrAgent.options = ASROptions(endPointing: .client(epdFile: epdFile))
+        } else {
+            log.error("EPD model file not exist")
+        }
         
         return client
     }()
@@ -298,35 +304,27 @@ private extension NuguCentralManager {
     }
 }
 
-// MARK: - Internal (WakeUpDetector)
+// MARK: - Internal (ASRAgent)
 
 extension NuguCentralManager {
-    func refreshWakeUpDetector() {
+    func refreshKeywordDetector() {
         DispatchQueue.main.async { [weak self] in
             // Should check application state, because iOS audio input can not be start using in background state
             guard UIApplication.shared.applicationState == .active,
                 UserDefaults.Standard.useWakeUpDetector else {
-                    self?.stopWakeUpDetector()
+                    self?.disableKeywordDetector()
                     return
             }
             
-            self?.startWakeUpDetector()
+            self?.enableKeywordDetector()
         }
     }
     
-    func startWakeUpDetector() {
-        guard let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord),
-            let netFile = keyword.netFile,
-            let searchFile = keyword.searchFile else {
-                log.debug("keywordSource is invalid")
-                return
+    func enableKeywordDetector() {
+        guard let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord) else {
+            log.debug("Keyword not found")
+            return
         }
-        
-        let keywordSource = KeywordSource(
-            keyword: keyword.description,
-            netFileUrl: netFile,
-            searchFileUrl: searchFile
-        )
         
         NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
             guard let self = self else { return }
@@ -334,13 +332,12 @@ extension NuguCentralManager {
                 log.error("Record permission denied")
                 return
             }
-            
-            self.client.asrAgent.startKeywordDetector(keywordSource: keywordSource)
+            self.client.asrAgent.enableKeywordDetector(keywordResource: keyword.keywordSource)
         }
     }
     
-    func stopWakeUpDetector() {
-        client.asrAgent.stopKeywordDetector()
+    func disableKeywordDetector() {
+        client.asrAgent.disableKeywordDetector()
     }
 }
 

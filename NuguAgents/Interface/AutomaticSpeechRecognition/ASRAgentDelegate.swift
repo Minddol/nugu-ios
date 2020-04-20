@@ -30,4 +30,8 @@ public protocol ASRAgentDelegate: class {
     /// Called when received a result of `startRecognition` request.
     /// - Parameter result: A recognized result.
     func asrAgentDidReceive(result: ASRResult, dialogRequestId: String)
+    
+    /// Used to notify the observe of `KeywordDetectorState` changes.
+    /// - Parameter state: The new `KeywordDetectorState`.
+    func asrAgentDidChange(state: ASRKeywordDetectorState)
 }

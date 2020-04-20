@@ -82,7 +82,7 @@ final class MainViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NuguCentralManager.shared.stopWakeUpDetector()
+        NuguCentralManager.shared.disableKeywordDetector()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -119,8 +119,8 @@ final class MainViewController: UIViewController {
     /// It is possible to keep on listening even on background, but need careful attention for battery issues, audio interruptions and so on
     /// - Parameter notification: UIApplication.willResignActiveNotification
     func willResignActive(_ notification: Notification) {
-        dismissVoiceChrome()
-        NuguCentralManager.shared.stopWakeUpDetector()
+        NuguCentralManager.shared.client.asrAgent.stopRecognition()
+        NuguCentralManager.shared.disableKeywordDetector()
     }
     
     /// Catch becoming active notification to refresh mic status & Nugu button
@@ -136,13 +136,24 @@ final class MainViewController: UIViewController {
 
 private extension MainViewController {
     @IBAction func showSettingsButtonDidClick(_ button: UIButton) {
-        NuguCentralManager.shared.stopWakeUpDetector()
+        NuguCentralManager.shared.disableKeywordDetector()
 
         performSegue(withIdentifier: "showSettings", sender: nil)
     }
     
     @IBAction func startRecognizeButtonDidClick(_ button: UIButton) {
-        presentVoiceChrome(initiator: .user)
+        NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
+            guard let self = self else { return }
+            guard isGranted else {
+                log.error("Record permission denied")
+                return
+            }
+            
+            NuguCentralManager.shared.localTTSAgent.stopLocalTTS()
+            
+            NuguCentralManager.shared.client.asrAgent.startRecognition()
+            self.presentVoiceChrome()
+        }
     }
 }
 
@@ -158,7 +169,6 @@ private extension MainViewController {
         NuguAudioSessionManager.shared.updateAudioSession()
         
         // Add delegates
-        NuguCentralManager.shared.client.asrAgent.keywordDelegate = self
         NuguCentralManager.shared.client.dialogStateAggregator.add(delegate: self)
         NuguCentralManager.shared.client.asrAgent.add(delegate: self)
         NuguCentralManager.shared.client.textAgent.delegate = self
@@ -184,7 +194,7 @@ private extension MainViewController {
             // Exception handling when already disconnected, scheduled update in future
             nuguButton.isEnabled = false
             nuguButton.isHidden = true
-            NuguCentralManager.shared.stopWakeUpDetector()
+            NuguCentralManager.shared.disableKeywordDetector()
             
             // Disable Nugu SDK
             NuguCentralManager.shared.disable()
@@ -197,7 +207,7 @@ private extension MainViewController {
         
         // Enable Nugu SDK
         NuguCentralManager.shared.enable()
-        NuguCentralManager.shared.refreshWakeUpDetector()
+        NuguCentralManager.shared.refreshKeywordDetector()
     }
 }
 
@@ -228,41 +238,22 @@ private extension MainViewController {
 // MARK: - Private (Voice Chrome)
 
 private extension MainViewController {
-    func presentVoiceChrome(initiator: ASROptions.Initiator) {
+    func presentVoiceChrome() {
         voiceChromeDismissWorkItem?.cancel()
-        
-        NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
+        nuguVoiceChrome.removeFromSuperview()
+        nuguVoiceChrome = NuguVoiceChrome(frame: CGRect(x: 0, y: view.frame.size.height, width: view.frame.size.width, height: NuguVoiceChrome.recommendedHeight + SampleApp.bottomSafeAreaHeight))
+        nuguVoiceChrome.onCloseButtonClick = { [weak self] in
+            self?.dismissVoiceChrome()
+        }
+        view.addSubview(nuguVoiceChrome)
+        UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self = self else { return }
-            guard isGranted else {
-                log.error("Record permission denied")
-                return
-            }
-            guard let epdFile = Bundle.main.url(forResource: "skt_epd_model", withExtension: "raw") else {
-                log.error("EPD model file not exist")
-                return
-            }
-            
-            NuguCentralManager.shared.localTTSAgent.stopLocalTTS()
-            
-            let options = ASROptions(initiator: initiator, endPointing: .client(epdFile: epdFile))
-            NuguCentralManager.shared.client.asrAgent.startRecognition(options: options)
-            
-            self.nuguVoiceChrome.removeFromSuperview()
-            self.nuguVoiceChrome = NuguVoiceChrome(frame: CGRect(x: 0, y: self.view.frame.size.height, width: self.view.frame.size.width, height: NuguVoiceChrome.recommendedHeight + SampleApp.bottomSafeAreaHeight))
-            self.nuguVoiceChrome.onCloseButtonClick = { [weak self] in
-                self?.dismissVoiceChrome()
-            }
-            self.view.addSubview(self.nuguVoiceChrome)
-            UIView.animate(withDuration: 0.3) { [weak self] in
-                guard let self = self else { return }
-                self.nuguVoiceChrome.transform = CGAffineTransform(translationX: 0.0, y: -self.nuguVoiceChrome.bounds.height)
-            }
+            self.nuguVoiceChrome.transform = CGAffineTransform(translationX: 0.0, y: -self.nuguVoiceChrome.bounds.height)
         }
     }
     
     func dismissVoiceChrome() {
         voiceChromeDismissWorkItem?.cancel()
-        NuguCentralManager.shared.client.asrAgent.stopRecognition()
         
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             guard let self = self else { return }
@@ -382,25 +373,6 @@ private extension MainViewController {
     }
 }
 
-// MARK: - KeywordDetectorDelegate
-
-extension MainViewController: ASRAgentKeywordDelegate {
-    func asrAgentKeywordDidDetect(keyword: String) {}
-    
-    func asrAgentKeywrodDidChange(state: KeywordDetectorState) {
-        switch state {
-        case .active:
-            DispatchQueue.main.async { [weak self] in
-                self?.nuguButton.startListeningAnimation()
-            }
-        case .inactive:
-            DispatchQueue.main.async { [weak self] in
-                self?.nuguButton.stopListeningAnimation()
-            }
-        }
-    }
-}
-
 // MARK: - DialogStateDelegate
 
 extension MainViewController: DialogStateDelegate {
@@ -471,7 +443,19 @@ extension MainViewController: ASRAgentDelegate {
         default: break
         }
     }
-
+    
+    func asrAgentDidChange(state: KeywordDetectorState) {
+        switch state {
+        case .active:
+            DispatchQueue.main.async { [weak self] in
+                self?.nuguButton.startListeningAnimation()
+            }
+        case .inactive:
+            DispatchQueue.main.async { [weak self] in
+                self?.nuguButton.stopListeningAnimation()
+            }
+        }
+    }
 }
 
 // MARK: - TextAgentDelegate

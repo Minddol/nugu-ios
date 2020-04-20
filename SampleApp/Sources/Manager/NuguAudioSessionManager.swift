@@ -69,7 +69,7 @@ extension NuguAudioSessionManager {
         NotificationCenter.default.addObserver(self, selector: #selector(inputStatusDidChanged(_ :)), name: .nuguClientInputStatus, object: nil)
         
         // Clean up all I/O before deactivating audioSession
-        NuguCentralManager.shared.stopWakeUpDetector()
+        NuguCentralManager.shared.disableKeywordDetector()
     }
     
     @objc func inputStatusDidChanged(_ notification: Notification) {
@@ -79,10 +79,10 @@ extension NuguAudioSessionManager {
         }
         
         do {
-            // Defer statement for recovering audioSession and wakeUpDetector
+            // Defer statement for recovering audioSession and keywordDetector
             defer {
                 updateAudioSessionCategoryWithOptions()
-                NuguCentralManager.shared.refreshWakeUpDetector()
+                NuguCentralManager.shared.refreshKeywordDetector()
             }
             // Notify audio session deactivation to 3rd party apps
             try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)

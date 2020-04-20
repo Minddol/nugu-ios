@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct KeywordDetectorResult {
+struct KeywordDetectorResult {
     public let keyword: String
     public let data: Data
     public let start: Int

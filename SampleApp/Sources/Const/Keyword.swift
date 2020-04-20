@@ -20,6 +20,8 @@
 
 import Foundation
 
+import NuguAgents
+
 enum Keyword: Int, CustomStringConvertible, CaseIterable {
     case aria = 0 // ɑriɑ
     case tinkerbell = 3 // tɪŋkəbel
@@ -33,21 +35,29 @@ enum Keyword: Int, CustomStringConvertible, CaseIterable {
         }
     }
     
-    var netFile: URL? {
+    var keywordResource: ASRKeywordResource {
+        return ASRKeywordResource(
+            keyword: description,
+            netFileUrl: netFile,
+            searchFileUrl: searchFile
+        )
+    }
+    
+    private var netFile: URL {
         switch self {
         case .aria:
-            return Bundle.main.url(forResource: "skt_trigger_am_aria", withExtension: "raw")
+            return Bundle.main.url(forResource: "skt_trigger_am_aria", withExtension: "raw")!
         case .tinkerbell:
-            return Bundle.main.url(forResource: "skt_trigger_am_tinkerbell", withExtension: "raw")
+            return Bundle.main.url(forResource: "skt_trigger_am_tinkerbell", withExtension: "raw")!
         }
     }
     
-    var searchFile: URL? {
+    private var searchFile: URL {
         switch self {
         case .aria:
-            return Bundle.main.url(forResource: "skt_trigger_search_aria", withExtension: "raw")
+            return Bundle.main.url(forResource: "skt_trigger_search_aria", withExtension: "raw")!
         case .tinkerbell:
-            return Bundle.main.url(forResource: "skt_trigger_search_tinkerbell", withExtension: "raw")
+            return Bundle.main.url(forResource: "skt_trigger_search_tinkerbell", withExtension: "raw")!
         }
     }
 }

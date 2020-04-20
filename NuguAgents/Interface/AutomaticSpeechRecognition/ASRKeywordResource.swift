@@ -1,5 +1,5 @@
 //
-//  KeywordSource.swift
+//  ASRKeywordResource.swift
 //  NuguAgents
 //
 //  Created by yonghoonKwon on 2019/12/03.
@@ -22,7 +22,7 @@ import Foundation
 
 import KeenSense
 
-public struct KeywordSource {
+public struct ASRKeywordResource {
     public let keyword: String
     public let netFileUrl: URL
     public let searchFileUrl: URL

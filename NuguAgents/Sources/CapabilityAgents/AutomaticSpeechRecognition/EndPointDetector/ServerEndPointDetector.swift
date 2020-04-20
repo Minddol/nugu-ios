@@ -26,7 +26,7 @@ import JadeMarble
 import RxSwift
 
 class ServerEndPointDetector: NSObject, EndPointDetectable {
-    public weak var delegate: EndPointDetectorDelegate?
+    weak var delegate: EndPointDetectorDelegate?
     
     private var boundStreams: AudioBoundStreams?
     private let asrOptions: ASROptions
@@ -66,7 +66,7 @@ class ServerEndPointDetector: NSObject, EndPointDetectable {
         speexEncoder = SpeexEncoder(sampleRate: Int(asrOptions.sampleRate), inputType: .linearPcm16)
     }
     
-    public func start(audioStreamReader: AudioStreamReadable) {
+    func start(audioStreamReader: AudioStreamReadable) {
         log.debug("")
         
         boundStreams?.stop()
@@ -100,7 +100,7 @@ class ServerEndPointDetector: NSObject, EndPointDetectable {
         
     }
     
-    public func stop() {
+    func stop() {
         log.debug("")
         
         listeningTimer?.dispose()

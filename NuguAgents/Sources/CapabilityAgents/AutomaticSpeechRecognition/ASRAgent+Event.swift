@@ -25,12 +25,12 @@ import NuguCore
 // MARK: - CapabilityEventAgentable
 
 extension ASRAgent {
-    public struct Event {
+    struct Event {
         let typeInfo: TypeInfo
         let expectSpeech: ASRExpectSpeech?
         
-        public enum TypeInfo {
-            case recognize(options: ASROptions)
+        enum TypeInfo {
+            case recognize(initiator: ASRRequest.Initiator, options: ASROptions)
             case responseTimeout
             case listenTimeout
             case stopRecognize
@@ -42,10 +42,10 @@ extension ASRAgent {
 // MARK: - Eventable
 
 extension ASRAgent.Event: Eventable {
-    public var payload: [String: AnyHashable] {
+    var payload: [String: AnyHashable] {
         var payload: [String: AnyHashable?]
         switch typeInfo {
-        case .recognize(let options):
+        case .recognize(let initiator, let options):
             payload = [
                 "codec": "SPEEX",
                 "language": "KOR",
@@ -62,7 +62,7 @@ extension ASRAgent.Event: Eventable {
                 ]
             ]
             
-            if case let .keyword(result) = options.initiator {
+            if case let .keyword(result) = initiator {
                 var wakeup: [String: AnyHashable] = ["word": result.keyword]
                 if options.endPointing == .server {
                     /**
@@ -90,7 +90,7 @@ extension ASRAgent.Event: Eventable {
         return payload.compactMapValues { $0 }
     }
     
-    public var name: String {
+    var name: String {
         switch typeInfo {
         case .recognize:
             return "Recognize"

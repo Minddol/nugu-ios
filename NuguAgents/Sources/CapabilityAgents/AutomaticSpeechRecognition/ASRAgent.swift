@@ -40,7 +40,7 @@ public final class ASRAgent: ASRAgentProtocol {
             }
         }
     }
-    public weak var keywordDelegate: ASRAgentKeywordDelegate?
+    public var options: ASROptions = ASROptions(endPointing: .server)
     
     // Private
     private let focusManager: FocusManageable
@@ -49,7 +49,6 @@ public final class ASRAgent: ASRAgentProtocol {
     private let upstreamDataSender: UpstreamDataSendable
     private let audioStream: AudioStreamable
     
-    private var options: ASROptions = ASROptions(endPointing: .server)
     private var endPointDetector: EndPointDetectable?
     private lazy var keywordDetector: KeywordDetector = {
         let keywordDetector =  KeywordDetector()
@@ -218,12 +217,8 @@ public extension ASRAgent {
         asrDelegates.remove(delegate)
     }
     
-    @discardableResult func startRecognition(
-        options: ASROptions,
-        completion: ((StreamDataState) -> Void)?
-    ) -> String {
-        self.options = options
-        return startRecognition(options: options, by: nil, completion: completion)
+    @discardableResult func startRecognition(completion: ((StreamDataState) -> Void)?) -> String {
+        return startRecognition(initiator: .user, options: options, by: nil, completion: completion)
     }
     
     /// This function asks the ASRAgent to stop streaming audio and end an ongoing Recognize Event, which transitions it to the BUSY state.
@@ -258,31 +253,22 @@ public extension ASRAgent {
         }
     }
     
-    func startKeywordDetector(keywordSource: KeywordSource) {
+    func enableKeywordDetector(keywordResource: ASRKeywordResource) {
         asrDispatchQueue.async { [weak self] in
             guard let self = self else { return }
             
             self.keywordDetectorEnabled = true
-            self.keywordDetector.keywordSource = keywordSource
+            self.keywordDetector.keywordResource = keywordResource
             self.startKeywordDetector()
         }
     }
     
-    private func startKeywordDetector() {
-        if self.keywordDetector.state == .inactive,
-            self.asrState != .listening {
-            self.keywordDetector.start()
-        }
-    }
-    
-    func stopKeywordDetector() {
+    func disableKeywordDetector() {
         asrDispatchQueue.async { [weak self] in
             guard let self = self else { return }
             
             self.keywordDetectorEnabled = false
-            if self.keywordDetector.state == .active {
-                self.keywordDetector.stop()
-            }
+            self.stopKeywordDetector()
         }
     }
 }
@@ -393,16 +379,15 @@ extension ASRAgent: EndPointDetectorDelegate {
 
 extension ASRAgent: KeywordDetectorDelegate {
     func keywordDetectorDidDetect(result: KeywordDetectorResult) {
-        keywordDelegate?.asrAgentKeywordDidDetect(keyword: result.keyword)
-        
-        let options = self.options.copy(initiator: .keyword(result: result))
-        self.startRecognition(options: options, by: nil)
+        self.startRecognition(initiator: .keyword(result: result), options: options, by: nil)
     }
     
     func keywordDetectorDidStop() {}
     
     func keywordDetectorStateDidChange(_ state: KeywordDetectorState) {
-        keywordDelegate?.asrAgentKeywrodDidChange(state: state)
+        asrDelegates.notify { delegate in
+            delegate.asrAgentDidChange(state: state)
+        }
     }
     
     func keywordDetectorDidError(_ error: Error) {}
@@ -453,9 +438,9 @@ private extension ASRAgent {
                             })
                         self.expectingSpeechTimeout?.disposed(by: self.disposeBag)
                         
-                        self.options.timeout = expectSpeech.timeout
-                        self.options.initiator = .scenario
-                        self.startRecognition(options: self.options, by: directive)
+                        var options = self.options
+                        options.timeout = expectSpeech.timeout
+                        self.startRecognition(initiator: .scenario, options: options, by: directive)
                     }
                 }
             )
@@ -548,7 +533,7 @@ private extension ASRAgent {
         asrState = .listening
         upstreamDataSender.sendStream(
             Event(
-                typeInfo: .recognize(options: asrRequest.options),
+                typeInfo: .recognize(initiator:asrRequest.initiator, options: asrRequest.options),
                 expectSpeech: expectSpeech
             ).makeEventMessage(
                 property: self.capabilityAgentProperty,
@@ -579,7 +564,7 @@ private extension ASRAgent {
             endPointDetector = ServerEndPointDetector(asrOptions: asrRequest.options)
 
             // send wake up voice data
-            if case let .keyword(result) = asrRequest.options.initiator {
+            if case let .keyword(result) = asrRequest.initiator {
                 do {
                     let speexData = try SpeexEncoder(sampleRate: Int(asrRequest.options.sampleRate), inputType: .linearPcm16).encode(data: result.data)
                     
@@ -616,11 +601,12 @@ private extension ASRAgent {
     }
     
     @discardableResult func startRecognition(
+        initiator: ASRRequest.Initiator,
         options: ASROptions,
         by directive: Downstream.Directive?,
         completion: ((StreamDataState) -> Void)? = nil
     ) -> String {
-        log.debug("startRecognition, initiator: \(options.initiator)")
+        log.debug("startRecognition, initiator: \(initiator)")
         let dialogRequestId = TimeUUID().hexString
         if options.endPointing == .server {
             log.warning("Server side end point detector does not support yet.")
@@ -645,6 +631,7 @@ private extension ASRAgent {
                     contextPayload: contextPayload,
                     reader: reader,
                     dialogRequestId: dialogRequestId,
+                    initiator: initiator,
                     options: options,
                     referrerDialogRequestId: directive?.header.dialogRequestId,
                     completion: completion
@@ -655,5 +642,22 @@ private extension ASRAgent {
         }
         
         return dialogRequestId
+    }
+}
+
+// MARK: - Private(EndPointDetector)
+
+private extension ASRAgent {
+    func startKeywordDetector() {
+        if keywordDetector.state == .inactive,
+            asrState != .listening {
+            keywordDetector.start()
+        }
+    }
+    
+    func stopKeywordDetector() {
+        if keywordDetector.state == .active {
+            keywordDetector.stop()
+        }
     }
 }
