@@ -31,7 +31,6 @@ public final class ASRAgent: ASRAgentProtocol {
     public var capabilityAgentProperty: CapabilityAgentProperty = CapabilityAgentProperty(category: .automaticSpeechRecognition, version: "1.1")
     
     // Public
-    public weak var keywordDetectorDelegate: ASRKeywordDetectorDelegate?
     public private(set) var expectSpeech: ASRExpectSpeech? {
         didSet {
             guard oldValue != expectSpeech else { return }
@@ -60,8 +59,6 @@ public final class ASRAgent: ASRAgentProtocol {
         return keywordDetector
     }()
     
-    private var keywordDetectorEnabled = false
-    
     private let asrDispatchQueue = DispatchQueue(label: "com.sktelecom.romaine.asr_agent", qos: .userInitiated)
     
     private let asrDelegates = DelegateSet<ASRAgentDelegate>()
@@ -81,6 +78,13 @@ public final class ASRAgent: ASRAgentProtocol {
                 asrRequest = nil
                 releaseFocusIfNeeded()
             }
+            
+            // Stop keyword detector
+            if asrState != .idle {
+                if keywordDetector.state == .active {
+                    keywordDetector.stop()
+                }
+            }
 
             // Stop EPD
             if [.listening, .recognizing].contains(asrState) == false {
@@ -94,16 +98,6 @@ public final class ASRAgent: ASRAgentProtocol {
                 asrDelegates.notify { delegate in
                     delegate.asrAgentDidChange(state: asrState, expectSpeech: expectSpeech)
                 }
-            }
-            
-            // Restart `KeywordDetector`
-            switch asrState {
-            case .idle:
-                startKeywordDetector()
-            case .listening:
-                stopKeywordDetector()
-            default:
-                break
             }
         }
     }
@@ -172,6 +166,7 @@ public final class ASRAgent: ASRAgentProtocol {
     }
     
     // For Recognize Event
+    private var asrTriggerRequest: ASRTriggerRequest?
     private var asrRequest: ASRRequest?
     private var attachmentSeq: Int32 = 0
     
@@ -245,31 +240,22 @@ public extension ASRAgent {
             guard let self = self else { return }
             // TODO: cancelAssociation = true 로 tts 가 종료되어도 expectSpeech directive 가 전달되는 현상으로 우선 currentExpectSpeech nil 처리.
             self.expectSpeech = nil
-            guard self.asrState != .idle else {
-                log.info("Not permitted in current state, \(self.asrState)")
-                return
+            if self.asrState != .idle {
+                if self.keywordDetector.state == .active {
+                    self.keywordDetector.stop()
+                }
+                self.asrResult = .cancel
             }
-
-            self.asrResult = .cancel
         }
     }
     
-    func enableKeywordDetector(keywordResource: ASRKeywordResource) {
+    func startRecognitionWithTrigger(keywordResource: ASRKeywordResource, trigger: @escaping (Result<String, Error>) -> Void, completion: ((StreamDataState) -> Void)?) {
         asrDispatchQueue.async { [weak self] in
             guard let self = self else { return }
             
-            self.keywordDetectorEnabled = true
+            self.asrTriggerRequest = ASRTriggerRequest(trigger: trigger, completion: completion)
             self.keywordDetector.keywordResource = keywordResource
-            self.startKeywordDetector()
-        }
-    }
-    
-    func disableKeywordDetector() {
-        asrDispatchQueue.async { [weak self] in
-            guard let self = self else { return }
-            
-            self.keywordDetectorEnabled = false
-            self.stopKeywordDetector()
+            self.keywordDetector.start()
         }
     }
 }
@@ -379,17 +365,19 @@ extension ASRAgent: EndPointDetectorDelegate {
 // MARK: - KeywordDetectorDelegate
 
 extension ASRAgent: ASRKeywordDetectorDelegate {
-    public func asrKeywordDetectorDidDetect(result: ASRKeywordDetectorResult) {
-        self.startRecognition(initiator: .keyword(result: result), options: options, by: nil)
-        keywordDetectorDelegate?.asrKeywordDetectorDidDetect(result: result)
+    func asrKeywordDetectorDidDetect(result: ASRKeywordDetectorResult) {
+        asrDispatchQueue.async { [weak self] in
+            guard let self = self else { return }
+            let dialogRequestId = self.startRecognition(initiator: .keyword(result: result), options: self.options, by: nil, completion: self.asrTriggerRequest?.completion)
+            self.asrTriggerRequest?.trigger(.success(dialogRequestId))
+        }
     }
     
-    public func asrKeywordDetectorStateDidChange(_ state: ASRKeywordDetectorState) {
-        keywordDetectorDelegate?.asrKeywordDetectorStateDidChange(state)
+    func asrKeywordDetectorStateDidChange(_ state: ASRKeywordDetectorState) {
     }
     
-    public func asrKeywordDetectorDidError(_ error: Error) {
-        keywordDetectorDelegate?.asrKeywordDetectorDidError(error)
+    func asrKeywordDetectorDidError(_ error: Error) {
+        self.asrTriggerRequest?.trigger(.failure(error))
     }
 }
 
@@ -628,22 +616,5 @@ private extension ASRAgent {
         }
         
         return dialogRequestId
-    }
-}
-
-// MARK: - Private(EndPointDetector)
-
-private extension ASRAgent {
-    func startKeywordDetector() {
-        if keywordDetector.state == .inactive,
-            asrState != .listening {
-            keywordDetector.start()
-        }
-    }
-    
-    func stopKeywordDetector() {
-        if keywordDetector.state == .active {
-            keywordDetector.stop()
-        }
     }
 }

@@ -1,8 +1,8 @@
 //
-//  ASRKeywordDetectorState.swift
+//  ASRKeywordDetectorDelegate.swift
 //  NuguAgents
 //
-//  Created by yonghoonKwon on 2019/12/04.
+//  Created by DCs-OfficeMBP on 14/05/2019.
 //  Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,8 @@
 
 import Foundation
 
-public enum ASRKeywordDetectorState {
-    case active
-    case inactive
+protocol ASRKeywordDetectorDelegate: class {
+    func asrKeywordDetectorDidDetect(result: ASRKeywordDetectorResult)
+    func asrKeywordDetectorDidError(_ error: Error)
+    func asrKeywordDetectorStateDidChange(_ state: ASRKeywordDetectorState)
 }

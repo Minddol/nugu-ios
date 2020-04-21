@@ -1,8 +1,8 @@
 //
-//  ASRKeywordDetectorDelegate.swift
+//  ASRTriggerRequest.swift
 //  NuguAgents
 //
-//  Created by DCs-OfficeMBP on 14/05/2019.
+//  Created by MinChul Lee on 2020/04/21.
 //  Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,8 +20,9 @@
 
 import Foundation
 
-public protocol ASRKeywordDetectorDelegate: class {
-    func asrKeywordDetectorDidDetect(result: ASRKeywordDetectorResult)
-    func asrKeywordDetectorDidError(_ error: Error)
-    func asrKeywordDetectorStateDidChange(_ state: ASRKeywordDetectorState)
+import NuguCore
+
+struct ASRTriggerRequest {
+    let trigger: ((Result<String, Error>) -> Void)
+    let completion: ((StreamDataState) -> Void)?
 }

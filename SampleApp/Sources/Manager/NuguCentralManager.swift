@@ -89,12 +89,11 @@ extension NuguCentralManager {
         }
 
         NuguLocationManager.shared.startUpdatingLocation()
-        enableKeywordDetector()
+        
     }
     
     func disable() {
         log.debug("")
-        disableKeywordDetector()
         client.stopReceiveServerInitiatedDirective()
         client.asrAgent.stopRecognition()
         client.ttsAgent.stopTTS(cancelAssociation: true)
@@ -304,34 +303,6 @@ private extension NuguCentralManager {
         oauthClient.authorize(grant: ClientCredentialsGrant(clientId: clientId, clientSecret: clientSecret)) { (result) in
             completion(result.mapError { SampleAppError.parseFromNuguLoginKitError(error: $0) })
         }
-    }
-}
-
-// MARK: - Internal (ASRAgent)
-
-extension NuguCentralManager {
-    func enableKeywordDetector() {
-        NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
-            guard isGranted else {
-                log.error("Record permission denied")
-                return
-            }
-            // Should check application state, because iOS audio input can not be start using in background state
-            guard UIApplication.shared.applicationState == .active,
-                UserDefaults.Standard.useWakeUpDetector else {
-                    self?.disableKeywordDetector()
-                    return
-            }
-            guard let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord) else {
-                log.debug("Keyword not found")
-                return
-            }
-            self?.client.asrAgent.enableKeywordDetector(keywordResource: keyword.keywordResource)
-        }
-    }
-    
-    func disableKeywordDetector() {
-        client.asrAgent.disableKeywordDetector()
     }
 }
 

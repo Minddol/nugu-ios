@@ -82,7 +82,7 @@ final class MainViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NuguCentralManager.shared.disableKeywordDetector()
+        NuguCentralManager.shared.client.asrAgent.stopRecognition()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -120,7 +120,6 @@ final class MainViewController: UIViewController {
     /// - Parameter notification: UIApplication.willResignActiveNotification
     func willResignActive(_ notification: Notification) {
         NuguCentralManager.shared.client.asrAgent.stopRecognition()
-        NuguCentralManager.shared.disableKeywordDetector()
     }
     
     /// Catch becoming active notification to refresh mic status & Nugu button
@@ -136,7 +135,7 @@ final class MainViewController: UIViewController {
 
 private extension MainViewController {
     @IBAction func showSettingsButtonDidClick(_ button: UIButton) {
-        NuguCentralManager.shared.disableKeywordDetector()
+        NuguCentralManager.shared.client.asrAgent.stopRecognition()
 
         performSegue(withIdentifier: "showSettings", sender: nil)
     }
@@ -206,6 +205,36 @@ private extension MainViewController {
         
         // Enable Nugu SDK
         NuguCentralManager.shared.enable()
+        startRecognitionWithTrigger()
+    }
+    
+    func startRecognitionWithTrigger() {
+        // Should check application state, because iOS audio input can not be start using in background state
+        guard UIApplication.shared.applicationState == .active,
+            UserDefaults.Standard.useWakeUpDetector else {
+                return
+        }
+        
+        NuguAudioSessionManager.shared.requestRecordPermission { isGranted in
+            guard isGranted else {
+                log.error("Record permission denied")
+                return
+            }
+            guard let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord) else {
+                log.debug("Keyword not found")
+                return
+            }
+            NuguCentralManager.shared.client.asrAgent.startRecognitionWithTrigger(keywordResource: keyword.keywordResource) { (result) in
+                switch result {
+                case .failure(let error):
+                    log.error(error)
+                case .success:
+                    DispatchQueue.main.async { [weak self] in
+                        self?.presentVoiceChrome()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -241,6 +270,7 @@ private extension MainViewController {
         nuguVoiceChrome.removeFromSuperview()
         nuguVoiceChrome = NuguVoiceChrome(frame: CGRect(x: 0, y: view.frame.size.height, width: view.frame.size.width, height: NuguVoiceChrome.recommendedHeight + SampleApp.bottomSafeAreaHeight))
         nuguVoiceChrome.onCloseButtonClick = { [weak self] in
+            NuguCentralManager.shared.client.asrAgent.stopRecognition()
             self?.dismissVoiceChrome()
         }
         view.addSubview(nuguVoiceChrome)
@@ -413,7 +443,16 @@ extension MainViewController: DialogStateDelegate {
 // MARK: - ASRAgentDelegate
 
 extension MainViewController: ASRAgentDelegate {
-    func asrAgentDidChange(state: ASRState, expectSpeech: ASRExpectSpeech?) {}
+    func asrAgentDidChange(state: ASRState, expectSpeech: ASRExpectSpeech?) {
+        switch state {
+        case .idle:
+            DispatchQueue.main.async { [weak self] in
+                self?.startRecognitionWithTrigger()
+            }
+        default:
+            break
+        }
+    }
     
     func asrAgentDidReceive(result: ASRResult, dialogRequestId: String) {
         switch result {
