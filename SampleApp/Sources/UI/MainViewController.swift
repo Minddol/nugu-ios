@@ -412,7 +412,7 @@ extension MainViewController: DialogStateDelegate {
     }
 }
 
-// MARK: - AutomaticSpeechRecognitionDelegate
+// MARK: - ASRAgentDelegate
 
 extension MainViewController: ASRAgentDelegate {
     func asrAgentDidChange(state: ASRState, expectSpeech: ASRExpectSpeech?) {}
@@ -443,20 +443,8 @@ extension MainViewController: ASRAgentDelegate {
         default: break
         }
     }
-    
-    func asrAgentDidChange(state: ASRKeywordDetectorState) {
-//        switch state {
-//        case .active:
-//            DispatchQueue.main.async { [weak self] in
-//                self?.nuguButton.startListeningAnimation()
-//            }
-//        case .inactive:
-//            DispatchQueue.main.async { [weak self] in
-//                self?.nuguButton.stopListeningAnimation()
-//            }
-//        }
-    }
 }
+
 
 // MARK: - TextAgentDelegate
 

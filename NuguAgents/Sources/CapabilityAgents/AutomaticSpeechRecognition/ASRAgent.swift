@@ -31,6 +31,7 @@ public final class ASRAgent: ASRAgentProtocol {
     public var capabilityAgentProperty: CapabilityAgentProperty = CapabilityAgentProperty(category: .automaticSpeechRecognition, version: "1.1")
     
     // Public
+    public weak var keywordDetectorDelegate: ASRKeywordDetectorDelegate?
     public private(set) var expectSpeech: ASRExpectSpeech? {
         didSet {
             guard oldValue != expectSpeech else { return }
@@ -377,20 +378,19 @@ extension ASRAgent: EndPointDetectorDelegate {
 
 // MARK: - KeywordDetectorDelegate
 
-extension ASRAgent: KeywordDetectorDelegate {
-    func keywordDetectorDidDetect(result: KeywordDetectorResult) {
+extension ASRAgent: ASRKeywordDetectorDelegate {
+    public func asrKeywordDetectorDidDetect(result: ASRKeywordDetectorResult) {
         self.startRecognition(initiator: .keyword(result: result), options: options, by: nil)
+        keywordDetectorDelegate?.asrKeywordDetectorDidDetect(result: result)
     }
     
-    func keywordDetectorDidStop() {}
-    
-    func keywordDetectorStateDidChange(_ state: KeywordDetectorState) {
-//        asrDelegates.notify { delegate in
-//            delegate.asrAgentDidChange(state: state)
-//        }
+    public func asrKeywordDetectorStateDidChange(_ state: ASRKeywordDetectorState) {
+        keywordDetectorDelegate?.asrKeywordDetectorStateDidChange(state)
     }
     
-    func keywordDetectorDidError(_ error: Error) {}
+    public func asrKeywordDetectorDidError(_ error: Error) {
+        keywordDetectorDelegate?.asrKeywordDetectorDidError(error)
+    }
 }
 
 // MARK: - Private (Directive)

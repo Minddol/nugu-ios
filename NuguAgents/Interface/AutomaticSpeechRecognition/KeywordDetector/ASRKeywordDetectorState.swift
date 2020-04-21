@@ -2,7 +2,7 @@
 //  ASRKeywordDetectorState.swift
 //  NuguAgents
 //
-//  Created by MinChul Lee on 2020/04/16.
+//  Created by yonghoonKwon on 2019/12/04.
 //  Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,5 +21,6 @@
 import Foundation
 
 public enum ASRKeywordDetectorState {
-    
+    case active
+    case inactive
 }

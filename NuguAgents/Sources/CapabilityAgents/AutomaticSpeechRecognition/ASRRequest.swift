@@ -32,7 +32,7 @@ struct ASRRequest {
     let completion: ((StreamDataState) -> Void)?
 
     enum Initiator {
-        case keyword(result: KeywordDetectorResult)
+        case keyword(result: ASRKeywordDetectorResult)
         case user
         case scenario
     }
