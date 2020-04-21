@@ -49,6 +49,7 @@ final class NuguCentralManager {
         } else {
             log.error("EPD model file not exist")
         }
+        client.soundAgent.dataSource = self
         
         return client
     }()
@@ -332,7 +333,7 @@ extension NuguCentralManager {
                 log.error("Record permission denied")
                 return
             }
-            self.client.asrAgent.enableKeywordDetector(keywordResource: keyword.keywordSource)
+            self.client.asrAgent.enableKeywordDetector(keywordResource: keyword.keywordResource)
         }
     }
     
@@ -415,6 +416,18 @@ extension NuguCentralManager: SystemAgentDelegate {
     }
 }
 
+// MARK: - SoundAgentDataSource
+
+extension NuguCentralManager: SoundAgentDataSource {
+    func soundAgentRequestUrl(beepName: SoundBeepName) -> URL? {
+        let url: URL?
+        switch beepName {
+        case .responseFail:
+            url = Bundle.main.url(forResource: "asrFail", withExtension: "wav")
+        }
+        return url
+    }
+}
 extension Notification.Name {
     static let nuguClientInputStatus = NSNotification.Name("Audio_Input_Status_Notification_Name")
     static let nuguClientNetworkStatus = NSNotification.Name("Audio_Network_Status_Notification_Name")

@@ -444,17 +444,17 @@ extension MainViewController: ASRAgentDelegate {
         }
     }
     
-    func asrAgentDidChange(state: KeywordDetectorState) {
-        switch state {
-        case .active:
-            DispatchQueue.main.async { [weak self] in
-                self?.nuguButton.startListeningAnimation()
-            }
-        case .inactive:
-            DispatchQueue.main.async { [weak self] in
-                self?.nuguButton.stopListeningAnimation()
-            }
-        }
+    func asrAgentDidChange(state: ASRKeywordDetectorState) {
+//        switch state {
+//        case .active:
+//            DispatchQueue.main.async { [weak self] in
+//                self?.nuguButton.startListeningAnimation()
+//            }
+//        case .inactive:
+//            DispatchQueue.main.async { [weak self] in
+//                self?.nuguButton.stopListeningAnimation()
+//            }
+//        }
     }
 }
 
@@ -534,7 +534,7 @@ extension MainViewController: AudioPlayerDisplayDelegate {
         dismissDisplayAudioPlayerView()
     }
     
-    func audioPlayerDisplayShouldUpdateMetadata(payload: String) {
+    func audioPlayerDisplayShouldUpdateMetadata(payload: Data) {
         guard let displayAudioPlayerView = displayAudioPlayerView else {
             return
         }

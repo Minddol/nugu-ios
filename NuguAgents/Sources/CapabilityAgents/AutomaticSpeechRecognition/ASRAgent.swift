@@ -385,9 +385,9 @@ extension ASRAgent: KeywordDetectorDelegate {
     func keywordDetectorDidStop() {}
     
     func keywordDetectorStateDidChange(_ state: KeywordDetectorState) {
-        asrDelegates.notify { delegate in
-            delegate.asrAgentDidChange(state: state)
-        }
+//        asrDelegates.notify { delegate in
+//            delegate.asrAgentDidChange(state: state)
+//        }
     }
     
     func keywordDetectorDidError(_ error: Error) {}
@@ -396,87 +396,73 @@ extension ASRAgent: KeywordDetectorDelegate {
 // MARK: - Private (Directive)
 
 private extension ASRAgent {
-    func prefetchExpectSpeech() -> HandleDirective {
-        return { [weak self] directive, completion in
-            completion(
-                Result { [weak self] in
-                    guard let data = directive.payload.data(using: .utf8) else {
-                        throw HandleDirectiveError.handleDirectiveError(message: "Invalid payload")
-                    }
-                    
-                    self?.expectSpeech = try JSONDecoder().decode(ASRExpectSpeech.self, from: data)
-                }
-            )
+    func prefetchExpectSpeech() -> PrefetchDirective {
+        return { [weak self] directive in
+            let expectSpeech = try JSONDecoder().decode(ASRExpectSpeech.self, from: directive.payload)
+
+            self?.asrDispatchQueue.async { [weak self] in
+                self?.expectSpeech = expectSpeech
+            }
         }
-        
     }
 
     func handleExpectSpeech() -> HandleDirective {
         return { [weak self] directive, completion in
-            completion(
-                Result { [weak self] in
-                    guard let self = self else { return }
-                    guard let expectSpeech = self.expectSpeech else {
-                        throw HandleDirectiveError.handleDirectiveError(message: "currentExpectSpeech is nil")
-                    }
-                    switch self.asrState {
-                    case .idle, .busy:
-                        break
-                    case .expectingSpeech, .listening, .recognizing:
-                        throw HandleDirectiveError.handleDirectiveError(message: "ExpectSpeech only allowed in IDLE or BUSY state.")
-                    }
-                    
-                    self.asrDispatchQueue.async { [weak self] in
-                        guard let self = self else { return }
-                        
-                        self.asrState = .expectingSpeech
-                        self.expectingSpeechTimeout = Observable<Int>
-                            .timer(ASRConst.focusTimeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .default))
-                            .subscribe(onNext: { [weak self] _ in
-                                log.info("expectingSpeechTimeout")
-                                self?.asrResult = .error(ASRError.listenFailed)
-                            })
-                        self.expectingSpeechTimeout?.disposed(by: self.disposeBag)
-                        
-                        var options = self.options
-                        options.timeout = expectSpeech.timeout
-                        self.startRecognition(initiator: .scenario, options: options, by: directive)
-                    }
+            defer { completion() }
+        
+            self?.asrDispatchQueue.async { [weak self] in
+                guard let self = self else { return }
+                guard let expectSpeech = self.expectSpeech else {
+                    log.error("currentExpectSpeech is nil")
+                    return
                 }
-            )
+                guard [.idle, .busy].contains(self.asrState) else {
+                    log.error("ExpectSpeech only allowed in IDLE or BUSY state.")
+                    return
+                }
+                
+                self.asrState = .expectingSpeech
+                self.expectingSpeechTimeout = Observable<Int>
+                    .timer(ASRConst.focusTimeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .default))
+                    .subscribe(onNext: { [weak self] _ in
+                        log.info("expectingSpeechTimeout")
+                        self?.asrResult = .error(ASRError.listenFailed)
+                    })
+                self.expectingSpeechTimeout?.disposed(by: self.disposeBag)
+
+                var options = self.options
+                options.timeout = expectSpeech.timeout
+                self.startRecognition(initiator: .scenario, options: options, by: directive)
+            }
         }
     }
     
     func handleNotifyResult() -> HandleDirective {
         return { [weak self] directive, completion in
-            completion(
-                Result { [weak self] in
-                    guard let self = self else { return }
-                    guard let data = directive.payload.data(using: .utf8) else {
-                        throw HandleDirectiveError.handleDirectiveError(message: "Invalid payload")
-                    }
-                    
-                    let item = try JSONDecoder().decode(ASRNotifyResult.self, from: data)
-                    
-                    self.endPointDetector?.handleNotifyResult(item.state)
-                    self.asrDispatchQueue.async { [weak self] in
-                        guard let self = self else { return }
-                        
-                        switch item.state {
-                        case .partial:
-                            self.asrResult = .partial(text: item.result ?? "")
-                        case .complete:
-                            self.asrResult = .complete(text: item.result ?? "")
-                        case .none:
-                            self.asrResult = .none
-                        case .error:
-                            self.asrResult = .error(ASRError.recognizeFailed)
-                        default:
-                            break
-                        }
-                    }
+            defer { completion() }
+
+            guard let item = try? JSONDecoder().decode(ASRNotifyResult.self, from: directive.payload) else {
+                log.error("Invalid payload")
+                return
+            }
+            
+            self?.asrDispatchQueue.async { [weak self] in
+                guard let self = self else { return }
+                
+                self.endPointDetector?.handleNotifyResult(item.state)
+                switch item.state {
+                case .partial:
+                    self.asrResult = .partial(text: item.result ?? "")
+                case .complete:
+                    self.asrResult = .complete(text: item.result ?? "")
+                case .none:
+                    self.asrResult = .none
+                case .error:
+                    self.asrResult = .error(ASRError.recognizeFailed)
+                default:
+                    break
                 }
-            )
+            }
         }
     }
 }
