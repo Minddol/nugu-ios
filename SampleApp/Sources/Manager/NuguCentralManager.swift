@@ -89,10 +89,12 @@ extension NuguCentralManager {
         }
 
         NuguLocationManager.shared.startUpdatingLocation()
+        enableKeywordDetector()
     }
     
     func disable() {
         log.debug("")
+        disableKeywordDetector()
         client.stopReceiveServerInitiatedDirective()
         client.asrAgent.stopRecognition()
         client.ttsAgent.stopTTS(cancelAssociation: true)
@@ -308,32 +310,23 @@ private extension NuguCentralManager {
 // MARK: - Internal (ASRAgent)
 
 extension NuguCentralManager {
-    func refreshKeywordDetector() {
-        DispatchQueue.main.async { [weak self] in
+    func enableKeywordDetector() {
+        NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
+            guard isGranted else {
+                log.error("Record permission denied")
+                return
+            }
             // Should check application state, because iOS audio input can not be start using in background state
             guard UIApplication.shared.applicationState == .active,
                 UserDefaults.Standard.useWakeUpDetector else {
                     self?.disableKeywordDetector()
                     return
             }
-            
-            self?.enableKeywordDetector()
-        }
-    }
-    
-    func enableKeywordDetector() {
-        guard let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord) else {
-            log.debug("Keyword not found")
-            return
-        }
-        
-        NuguAudioSessionManager.shared.requestRecordPermission { [weak self] isGranted in
-            guard let self = self else { return }
-            guard isGranted else {
-                log.error("Record permission denied")
+            guard let keyword = Keyword(rawValue: UserDefaults.Standard.wakeUpWord) else {
+                log.debug("Keyword not found")
                 return
             }
-            self.client.asrAgent.enableKeywordDetector(keywordResource: keyword.keywordResource)
+            self?.client.asrAgent.enableKeywordDetector(keywordResource: keyword.keywordResource)
         }
     }
     

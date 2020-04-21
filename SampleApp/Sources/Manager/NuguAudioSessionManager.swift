@@ -82,7 +82,7 @@ extension NuguAudioSessionManager {
             // Defer statement for recovering audioSession and keywordDetector
             defer {
                 updateAudioSessionCategoryWithOptions()
-                NuguCentralManager.shared.refreshKeywordDetector()
+                NuguCentralManager.shared.enableKeywordDetector()
             }
             // Notify audio session deactivation to 3rd party apps
             try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)

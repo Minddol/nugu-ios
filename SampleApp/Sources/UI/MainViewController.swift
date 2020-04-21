@@ -194,7 +194,6 @@ private extension MainViewController {
             // Exception handling when already disconnected, scheduled update in future
             nuguButton.isEnabled = false
             nuguButton.isHidden = true
-            NuguCentralManager.shared.disableKeywordDetector()
             
             // Disable Nugu SDK
             NuguCentralManager.shared.disable()
@@ -207,7 +206,6 @@ private extension MainViewController {
         
         // Enable Nugu SDK
         NuguCentralManager.shared.enable()
-        NuguCentralManager.shared.refreshKeywordDetector()
     }
 }
 
