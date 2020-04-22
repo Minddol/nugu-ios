@@ -364,8 +364,8 @@ extension ASRAgent: EndPointDetectorDelegate {
 
 // MARK: - KeywordDetectorDelegate
 
-extension ASRAgent: ASRKeywordDetectorDelegate {
-    func asrKeywordDetectorDidDetect(result: ASRKeywordDetectorResult) {
+extension ASRAgent: KeywordDetectorDelegate {
+    func keywordDetectorDidDetect(result: KeywordDetectorResult) {
         asrDispatchQueue.async { [weak self] in
             guard let self = self else { return }
             let dialogRequestId = self.startRecognition(initiator: .keyword(result: result), options: self.options, by: nil, completion: self.asrTriggerRequest?.completion)
@@ -373,10 +373,10 @@ extension ASRAgent: ASRKeywordDetectorDelegate {
         }
     }
     
-    func asrKeywordDetectorStateDidChange(_ state: ASRKeywordDetectorState) {
+    func keywordDetectorStateDidChange(_ state: KeywordDetectorState) {
     }
     
-    func asrKeywordDetectorDidError(_ error: Error) {
+    func keywordDetectorDidError(_ error: Error) {
         self.asrTriggerRequest?.trigger(.failure(error))
     }
 }

@@ -28,11 +28,11 @@ class KeywordDetector {
     private let engine = TycheKeywordDetectorEngine()
     
     var audioStream: AudioStreamable!
-    weak var delegate: ASRKeywordDetectorDelegate?
+    weak var delegate: KeywordDetectorDelegate?
     
-    var state: ASRKeywordDetectorState = .inactive {
+    var state: KeywordDetectorState = .inactive {
         didSet {
-            delegate?.asrKeywordDetectorStateDidChange(state)
+            delegate?.keywordDetectorStateDidChange(state)
         }
     }
     
@@ -68,21 +68,21 @@ class KeywordDetector {
 
 extension KeywordDetector: TycheKeywordDetectorEngineDelegate {
     public func tycheKeywordDetectorEngineDidDetect(data: Data, start: Int, end: Int, detection: Int) {
-        delegate?.asrKeywordDetectorDidDetect(result: ASRKeywordDetectorResult(keyword: keyword, data: data, start: start, end: end, detection: detection))
+        delegate?.keywordDetectorDidDetect(result: KeywordDetectorResult(keyword: keyword, data: data, start: start, end: end, detection: detection))
     }
     
     public func tycheKeywordDetectorEngineDidError(_ error: Error) {
-        delegate?.asrKeywordDetectorDidError(error)
+        delegate?.keywordDetectorDidError(error)
     }
     
     public func tycheKeywordDetectorEngineDidChange(state: TycheKeywordDetectorEngine.State) {
         switch state {
         case .active:
             self.state = .active
-            delegate?.asrKeywordDetectorStateDidChange(.active)
+            delegate?.keywordDetectorStateDidChange(.active)
         case .inactive:
             self.state = .inactive
-            delegate?.asrKeywordDetectorStateDidChange(.inactive)
+            delegate?.keywordDetectorStateDidChange(.inactive)
         }
     }
 }

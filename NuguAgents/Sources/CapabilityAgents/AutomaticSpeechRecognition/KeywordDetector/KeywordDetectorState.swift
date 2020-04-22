@@ -1,8 +1,8 @@
 //
-//  ASRKeywordDetectorResult.swift
+//  KeywordDetectorState.swift
 //  NuguAgents
 //
-//  Created by MinChul Lee on 2020/04/13.
+//  Created by yonghoonKwon on 2019/12/04.
 //  Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,10 +20,7 @@
 
 import Foundation
 
-struct ASRKeywordDetectorResult {
-    public let keyword: String
-    public let data: Data
-    public let start: Int
-    public let end: Int
-    public let detection: Int
+enum KeywordDetectorState {
+    case active
+    case inactive
 }
