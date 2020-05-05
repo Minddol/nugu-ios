@@ -130,7 +130,6 @@
 		1FFFF474237580F500C9A177 /* NuguVoiceChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF45C237580F500C9A177 /* NuguVoiceChrome.swift */; };
 		1FFFF475237580F500C9A177 /* NuguVoiceChrome.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FFFF45D237580F500C9A177 /* NuguVoiceChrome.xib */; };
 		1FFFF476237580F500C9A177 /* NuguButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF45F237580F500C9A177 /* NuguButton.swift */; };
-		1FFFF477237580F500C9A177 /* NuguButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FFFF460237580F500C9A177 /* NuguButton.xib */; };
 		1FFFF478237580F500C9A177 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FFFF462237580F500C9A177 /* Assets.xcassets */; };
 		1FFFF4DF237672F100C9A177 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF4A5237672F100C9A177 /* SettingViewController.swift */; };
 		1FFFF4E0237672F100C9A177 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF4A6237672F100C9A177 /* IntroViewController.swift */; };
@@ -154,7 +153,6 @@
 		1FFFF4F2237672F100C9A177 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF4BC237672F100C9A177 /* DisplayView.swift */; };
 		1FFFF4F3237672F100C9A177 /* DisplayListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF4BD237672F100C9A177 /* DisplayListView.swift */; };
 		1FFFF4F4237672F100C9A177 /* DisplayAudioPlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1FFFF4BE237672F100C9A177 /* DisplayAudioPlayerView.xib */; };
-		1FFFF4F5237672F100C9A177 /* NuguToastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF4BF237672F100C9A177 /* NuguToastManager.swift */; };
 		1FFFF4F6237672F100C9A177 /* UIColor+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF4C1237672F100C9A177 /* UIColor+Convenience.swift */; };
 		1FFFF4F7237672F100C9A177 /* Int+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF4C2237672F100C9A177 /* Int+Convenience.swift */; };
 		1FFFF4F8237672F100C9A177 /* ImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF4C4237672F100C9A177 /* ImageDataLoader.swift */; };
@@ -311,13 +309,28 @@
 		75082BC4243AC5B20027D76D /* MediaCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75082BC3243AC5B20027D76D /* MediaCacheManager.swift */; };
 		75082BC6243AC85E0027D76D /* FileManager+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75082BC5243AC85E0027D76D /* FileManager+Convenience.swift */; };
 		75082BC8243ACA280027D76D /* CryptoUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75082BC7243ACA280027D76D /* CryptoUtil.swift */; };
+		75222033244F0DE300192D88 /* 03_transition.json in Resources */ = {isa = PBXBuildFile; fileRef = 7522202C244F0DE300192D88 /* 03_transition.json */; };
+		75222034244F0DE300192D88 /* 04_active.json in Resources */ = {isa = PBXBuildFile; fileRef = 7522202D244F0DE300192D88 /* 04_active.json */; };
+		75222035244F0DE300192D88 /* 02_passive.json in Resources */ = {isa = PBXBuildFile; fileRef = 7522202E244F0DE300192D88 /* 02_passive.json */; };
+		75222036244F0DE300192D88 /* 01_intro.json in Resources */ = {isa = PBXBuildFile; fileRef = 7522202F244F0DE300192D88 /* 01_intro.json */; };
+		75222037244F0DE300192D88 /* 05_processing.json in Resources */ = {isa = PBXBuildFile; fileRef = 75222030244F0DE300192D88 /* 05_processing.json */; };
+		75222038244F0DE300192D88 /* 07_speaking.json in Resources */ = {isa = PBXBuildFile; fileRef = 75222031244F0DE300192D88 /* 07_speaking.json */; };
+		75222039244F0DE300192D88 /* 06_transition.json in Resources */ = {isa = PBXBuildFile; fileRef = 75222032244F0DE300192D88 /* 06_transition.json */; };
+		7522203C244F627E00192D88 /* NuguChipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7522203B244F627E00192D88 /* NuguChipsView.swift */; };
+		7522203E244F632800192D88 /* NuguChipsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7522203D244F632800192D88 /* NuguChipsView.xib */; };
+		7522205D244FFD1C00192D88 /* NuguToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7522205C244FFD1C00192D88 /* NuguToast.swift */; };
+		7522205E2450123E00192D88 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75ABAB06244EFD8600B4BB2D /* Lottie.framework */; };
+		7522205F2450125300192D88 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75ABAB06244EFD8600B4BB2D /* Lottie.framework */; };
 		7547B703240CD5C200C57A34 /* Dictionary+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547B702240CD5C200C57A34 /* Dictionary+Convenience.swift */; };
+		75AE7FFB245173BC00E20E8C /* NuguChipsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AE7FFA245173BC00E20E8C /* NuguChipsButton.swift */; };
+		75AE8023245190CC00E20E8C /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75ABAB06244EFD8600B4BB2D /* Lottie.framework */; };
 		7E0E0B062437065600198FCB /* ServerEndPointDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0E0B052437065600198FCB /* ServerEndPointDetector.swift */; };
 		7E0E0B082437077F00198FCB /* EndPointDetectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0E0B072437077F00198FCB /* EndPointDetectable.swift */; };
 		7E1FA2B224244F79006B8BA9 /* BlockingPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1FA2B124244F79006B8BA9 /* BlockingPolicy.swift */; };
 		7E2471012435DAC200640F5E /* ASROptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2471002435DAC200640F5E /* ASROptions.swift */; };
 		7E26C58123A08DC100716E44 /* URLRequest+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E26C58023A08DC100716E44 /* URLRequest+Rx.swift */; };
 		7E3C5707244FC62300FF36DF /* EventSenders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3C5706244FC62300FF36DF /* EventSenders.swift */; };
+		7E3C570F2450049C00FF36DF /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3C570E2450049C00FF36DF /* Keyword.swift */; };
 		7E4382542418DAB200053A0D /* PlayStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4382532418DAB200053A0D /* PlayStack.swift */; };
 		7E5F488C243C372100118054 /* SoundAgentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5F488B243C372100118054 /* SoundAgentProtocol.swift */; };
 		7E5F488E243C379C00118054 /* SoundAgentDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5F488D243C379B00118054 /* SoundAgentDataSource.swift */; };
@@ -338,7 +351,6 @@
 		7EBB2EB52444169100FBBBEA /* KeywordDetectorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E803D2397A27300569C59 /* KeywordDetectorState.swift */; };
 		7EBB2EB62444169100FBBBEA /* KeywordDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330CD81237A77D800FCD6E9 /* KeywordDetector.swift */; };
 		7EBB2EB72444169100FBBBEA /* ASRKeywordResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E803823966D9D00569C59 /* ASRKeywordResource.swift */; };
-		7EBB2EB92444193300FBBBEA /* Keyword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB2EB82444193300FBBBEA /* Keyword.swift */; };
 		7ED6D8B6244ED694009FC251 /* ASRTriggerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED6D8B5244ED694009FC251 /* ASRTriggerRequest.swift */; };
 		7EDCF2A72384FE88006F96B6 /* StreamDataRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDCF2A62384FE88006F96B6 /* StreamDataRouter.swift */; };
 		7EF12B1323C41F5F0000E158 /* DialogStateDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFF28E2375703000C9A177 /* DialogStateDelegate.swift */; };
@@ -367,7 +379,6 @@
 		A18B7A6223A77117007801E6 /* DisplayWeatherListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A18B7A6123A77117007801E6 /* DisplayWeatherListView.xib */; };
 		A18B7A6423A77135007801E6 /* DisplayWeatherListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18B7A6323A77135007801E6 /* DisplayWeatherListViewCell.swift */; };
 		A18B7A6623A77144007801E6 /* DisplayWeatherListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A18B7A6523A77144007801E6 /* DisplayWeatherListViewCell.xib */; };
-		A1B33EFB237D47D800CD4DE0 /* NuguVoiceChromeAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B33EFA237D47D800CD4DE0 /* NuguVoiceChromeAnimationView.swift */; };
 		A1B741BA23E1641500D862F7 /* DisplayControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B741B923E1641500D862F7 /* DisplayControllable.swift */; };
 		A1B86FF82390B3C100F6BD11 /* NuguAudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B86FF72390B3C100F6BD11 /* NuguAudioSessionManager.swift */; };
 		A1DAC4E523A371B600F8D638 /* DisplayWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DAC4E423A371B600F8D638 /* DisplayWeatherView.swift */; };
@@ -749,7 +760,6 @@
 		1FFFF45C237580F500C9A177 /* NuguVoiceChrome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NuguVoiceChrome.swift; sourceTree = "<group>"; };
 		1FFFF45D237580F500C9A177 /* NuguVoiceChrome.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NuguVoiceChrome.xib; sourceTree = "<group>"; };
 		1FFFF45F237580F500C9A177 /* NuguButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NuguButton.swift; sourceTree = "<group>"; };
-		1FFFF460237580F500C9A177 /* NuguButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NuguButton.xib; sourceTree = "<group>"; };
 		1FFFF462237580F500C9A177 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1FFFF48D237671F500C9A177 /* SampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFFF4A5237672F100C9A177 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
@@ -774,7 +784,6 @@
 		1FFFF4BC237672F100C9A177 /* DisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
 		1FFFF4BD237672F100C9A177 /* DisplayListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayListView.swift; sourceTree = "<group>"; };
 		1FFFF4BE237672F100C9A177 /* DisplayAudioPlayerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayAudioPlayerView.xib; sourceTree = "<group>"; };
-		1FFFF4BF237672F100C9A177 /* NuguToastManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NuguToastManager.swift; sourceTree = "<group>"; };
 		1FFFF4C1237672F100C9A177 /* UIColor+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Convenience.swift"; sourceTree = "<group>"; };
 		1FFFF4C2237672F100C9A177 /* Int+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Convenience.swift"; sourceTree = "<group>"; };
 		1FFFF4C4237672F100C9A177 /* ImageDataLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDataLoader.swift; sourceTree = "<group>"; };
@@ -846,13 +855,26 @@
 		75082BC3243AC5B20027D76D /* MediaCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCacheManager.swift; sourceTree = "<group>"; };
 		75082BC5243AC85E0027D76D /* FileManager+Convenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Convenience.swift"; sourceTree = "<group>"; };
 		75082BC7243ACA280027D76D /* CryptoUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoUtil.swift; sourceTree = "<group>"; };
+		7522202C244F0DE300192D88 /* 03_transition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 03_transition.json; sourceTree = "<group>"; };
+		7522202D244F0DE300192D88 /* 04_active.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 04_active.json; sourceTree = "<group>"; };
+		7522202E244F0DE300192D88 /* 02_passive.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 02_passive.json; sourceTree = "<group>"; };
+		7522202F244F0DE300192D88 /* 01_intro.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 01_intro.json; sourceTree = "<group>"; };
+		75222030244F0DE300192D88 /* 05_processing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 05_processing.json; sourceTree = "<group>"; };
+		75222031244F0DE300192D88 /* 07_speaking.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 07_speaking.json; sourceTree = "<group>"; };
+		75222032244F0DE300192D88 /* 06_transition.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 06_transition.json; sourceTree = "<group>"; };
+		7522203B244F627E00192D88 /* NuguChipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NuguChipsView.swift; sourceTree = "<group>"; };
+		7522203D244F632800192D88 /* NuguChipsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NuguChipsView.xib; sourceTree = "<group>"; };
+		7522205C244FFD1C00192D88 /* NuguToast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NuguToast.swift; sourceTree = "<group>"; };
 		7547B702240CD5C200C57A34 /* Dictionary+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Convenience.swift"; sourceTree = "<group>"; };
+		75ABAB06244EFD8600B4BB2D /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Lottie.framework; path = Carthage/Build/iOS/Lottie.framework; sourceTree = "<group>"; };
+		75AE7FFA245173BC00E20E8C /* NuguChipsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NuguChipsButton.swift; sourceTree = "<group>"; };
 		7E0E0B052437065600198FCB /* ServerEndPointDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerEndPointDetector.swift; sourceTree = "<group>"; };
 		7E0E0B072437077F00198FCB /* EndPointDetectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointDetectable.swift; sourceTree = "<group>"; };
 		7E1FA2B124244F79006B8BA9 /* BlockingPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingPolicy.swift; sourceTree = "<group>"; };
 		7E2471002435DAC200640F5E /* ASROptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASROptions.swift; sourceTree = "<group>"; };
 		7E26C58023A08DC100716E44 /* URLRequest+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Rx.swift"; sourceTree = "<group>"; };
 		7E3C5706244FC62300FF36DF /* EventSenders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventSenders.swift; sourceTree = "<group>"; };
+		7E3C570E2450049C00FF36DF /* Keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
 		7E4382532418DAB200053A0D /* PlayStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayStack.swift; sourceTree = "<group>"; };
 		7E5237F8239649940058F0B9 /* NSObject+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Rx.swift"; sourceTree = "<group>"; };
 		7E5F488B243C372100118054 /* SoundAgentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundAgentProtocol.swift; sourceTree = "<group>"; };
@@ -870,7 +892,6 @@
 		7E98BACF239A2ED700B9582D /* AuthorizationStoreable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationStoreable.swift; sourceTree = "<group>"; };
 		7EBB2EAD2444052A00FBBBEA /* SoundAgentSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundAgentSpec.swift; sourceTree = "<group>"; };
 		7EBB2EB02444162800FBBBEA /* KeywordDetectorResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeywordDetectorResult.swift; sourceTree = "<group>"; };
-		7EBB2EB82444193300FBBBEA /* Keyword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyword.swift; sourceTree = "<group>"; };
 		7ED6D8B5244ED694009FC251 /* ASRTriggerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASRTriggerRequest.swift; sourceTree = "<group>"; };
 		7EDCF2A62384FE88006F96B6 /* StreamDataRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamDataRouter.swift; sourceTree = "<group>"; };
 		7EF12B2223C822520000E158 /* DisplayClosePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayClosePayload.swift; sourceTree = "<group>"; };
@@ -898,7 +919,6 @@
 		A18B7A6123A77117007801E6 /* DisplayWeatherListView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DisplayWeatherListView.xib; sourceTree = "<group>"; };
 		A18B7A6323A77135007801E6 /* DisplayWeatherListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayWeatherListViewCell.swift; sourceTree = "<group>"; };
 		A18B7A6523A77144007801E6 /* DisplayWeatherListViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DisplayWeatherListViewCell.xib; sourceTree = "<group>"; };
-		A1B33EFA237D47D800CD4DE0 /* NuguVoiceChromeAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NuguVoiceChromeAnimationView.swift; sourceTree = "<group>"; };
 		A1B741B923E1641500D862F7 /* DisplayControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayControllable.swift; sourceTree = "<group>"; };
 		A1B86FF72390B3C100F6BD11 /* NuguAudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NuguAudioSessionManager.swift; sourceTree = "<group>"; };
 		A1DAC4E423A371B600F8D638 /* DisplayWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayWeatherView.swift; sourceTree = "<group>"; };
@@ -940,6 +960,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7522205E2450123E00192D88 /* Lottie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -968,6 +989,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7522205F2450125300192D88 /* Lottie.framework in Frameworks */,
 				1F10090B23792A0000D90FEE /* RxSwift.framework in Frameworks */,
 				73152FA123E0405900F843C3 /* NuguAgents.framework in Frameworks */,
 				1FFFF51A237674DF00C9A177 /* NuguUIKit.framework in Frameworks */,
@@ -984,6 +1006,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75AE8023245190CC00E20E8C /* Lottie.framework in Frameworks */,
 				1F2E8009238FCD4400569C59 /* JadeMarble.framework in Frameworks */,
 				1F2E800A238FCD4400569C59 /* KeenSense.framework in Frameworks */,
 				1F2E800B238FCD4400569C59 /* NuguClientKit.framework in Frameworks */,
@@ -1314,6 +1337,7 @@
 		1FFFF22323756C0500C9A177 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				75ABAB06244EFD8600B4BB2D /* Lottie.framework */,
 				1F721C65241767E100023EF8 /* Nimble.framework */,
 				1F721C64241767E100023EF8 /* Quick.framework */,
 				1F10090A23792A0000D90FEE /* RxSwift.framework */,
@@ -1948,6 +1972,8 @@
 		1FFFF45A237580F500C9A177 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				7522205B244FFCBD00192D88 /* Toast */,
+				7522203A244F622D00192D88 /* Chips */,
 				1FFFF45B237580F500C9A177 /* VoiceChrome */,
 				1FFFF45E237580F500C9A177 /* Button */,
 			);
@@ -1957,7 +1983,6 @@
 		1FFFF45B237580F500C9A177 /* VoiceChrome */ = {
 			isa = PBXGroup;
 			children = (
-				A1B33EFA237D47D800CD4DE0 /* NuguVoiceChromeAnimationView.swift */,
 				1FFFF45C237580F500C9A177 /* NuguVoiceChrome.swift */,
 				1FFFF45D237580F500C9A177 /* NuguVoiceChrome.xib */,
 			);
@@ -1968,7 +1993,6 @@
 			isa = PBXGroup;
 			children = (
 				1FFFF45F237580F500C9A177 /* NuguButton.swift */,
-				1FFFF460237580F500C9A177 /* NuguButton.xib */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -1976,6 +2000,7 @@
 		1FFFF461237580F500C9A177 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7522202B244F0DE300192D88 /* animations */,
 				1FFFF462237580F500C9A177 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -2024,7 +2049,6 @@
 			children = (
 				1FFFF4AB237672F100C9A177 /* DisplayViews */,
 				1FFFF4AA237672F100C9A177 /* NuguWebView.swift */,
-				1FFFF4BF237672F100C9A177 /* NuguToastManager.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2097,7 +2121,7 @@
 			children = (
 				1FFFF4C7237672F100C9A177 /* SampleApp.swift */,
 				1FFFF4C6237672F100C9A177 /* SampleAppError.swift */,
-				7EBB2EB82444193300FBBBEA /* Keyword.swift */,
+				7E3C570E2450049C00FF36DF /* Keyword.swift */,
 			);
 			path = Const;
 			sourceTree = "<group>";
@@ -2356,6 +2380,38 @@
 				735A4CE0241173F4004E7A41 /* EventSenderError.swift */,
 			);
 			path = Event;
+			sourceTree = "<group>";
+		};
+		7522202B244F0DE300192D88 /* animations */ = {
+			isa = PBXGroup;
+			children = (
+				7522202C244F0DE300192D88 /* 03_transition.json */,
+				7522202D244F0DE300192D88 /* 04_active.json */,
+				7522202E244F0DE300192D88 /* 02_passive.json */,
+				7522202F244F0DE300192D88 /* 01_intro.json */,
+				75222030244F0DE300192D88 /* 05_processing.json */,
+				75222031244F0DE300192D88 /* 07_speaking.json */,
+				75222032244F0DE300192D88 /* 06_transition.json */,
+			);
+			path = animations;
+			sourceTree = "<group>";
+		};
+		7522203A244F622D00192D88 /* Chips */ = {
+			isa = PBXGroup;
+			children = (
+				75AE7FFA245173BC00E20E8C /* NuguChipsButton.swift */,
+				7522203B244F627E00192D88 /* NuguChipsView.swift */,
+				7522203D244F632800192D88 /* NuguChipsView.xib */,
+			);
+			path = Chips;
+			sourceTree = "<group>";
+		};
+		7522205B244FFCBD00192D88 /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				7522205C244FFD1C00192D88 /* NuguToast.swift */,
+			);
+			path = Toast;
 			sourceTree = "<group>";
 		};
 		7E5F4889243C370900118054 /* Sound */ = {
@@ -2829,9 +2885,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1FFFF477237580F500C9A177 /* NuguButton.xib in Resources */,
+				75222038244F0DE300192D88 /* 07_speaking.json in Resources */,
+				7522203E244F632800192D88 /* NuguChipsView.xib in Resources */,
 				1FFFF478237580F500C9A177 /* Assets.xcassets in Resources */,
+				75222036244F0DE300192D88 /* 01_intro.json in Resources */,
+				75222034244F0DE300192D88 /* 04_active.json in Resources */,
+				75222039244F0DE300192D88 /* 06_transition.json in Resources */,
 				1FFFF475237580F500C9A177 /* NuguVoiceChrome.xib in Resources */,
+				75222035244F0DE300192D88 /* 02_passive.json in Resources */,
+				75222033244F0DE300192D88 /* 03_transition.json in Resources */,
+				75222037244F0DE300192D88 /* 05_processing.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2940,6 +3003,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/NattyLog.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Lottie.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -2961,6 +3025,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/NattyLog.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Lottie.framework",
 			);
 			outputFileListPaths = (
 			);
@@ -3106,9 +3171,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B33EFB237D47D800CD4DE0 /* NuguVoiceChromeAnimationView.swift in Sources */,
+				7522205D244FFD1C00192D88 /* NuguToast.swift in Sources */,
 				1FFFF476237580F500C9A177 /* NuguButton.swift in Sources */,
 				1FFFF474237580F500C9A177 /* NuguVoiceChrome.swift in Sources */,
+				75AE7FFB245173BC00E20E8C /* NuguChipsButton.swift in Sources */,
+				7522203C244F627E00192D88 /* NuguChipsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3145,7 +3212,7 @@
 				1FFFF4E1237672F100C9A177 /* MainViewController.swift in Sources */,
 				1FFFF4E5237672F100C9A177 /* DisplayBodyListViewCell.swift in Sources */,
 				1FFFF4FD237672F100C9A177 /* NuguDisplayPlayerController.swift in Sources */,
-				7EBB2EB92444193300FBBBEA /* Keyword.swift in Sources */,
+				7E3C570F2450049C00FF36DF /* Keyword.swift in Sources */,
 				A17B06D4239E28EB00D739E9 /* LocalTTSAgent.swift in Sources */,
 				1FFFF4FF237672F100C9A177 /* UserDefaults+Romaine.swift in Sources */,
 				7547B703240CD5C200C57A34 /* Dictionary+Convenience.swift in Sources */,
@@ -3165,7 +3232,6 @@
 				1FFFF4E0237672F100C9A177 /* IntroViewController.swift in Sources */,
 				A15050952416272500671568 /* AudioPlayerUpdateMetadataPayload.swift in Sources */,
 				1FFFF4F0237672F100C9A177 /* DisplayBodyView.swift in Sources */,
-				1FFFF4F5237672F100C9A177 /* NuguToastManager.swift in Sources */,
 				1FFFF4F9237672F100C9A177 /* SampleAppError.swift in Sources */,
 				A1ED44592384FD24002A1F75 /* NuguLocationManager.swift in Sources */,
 				1FFFF4ED237672F100C9A177 /* DisplayCommonTemplate.swift in Sources */,
@@ -3452,7 +3518,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/NuguCore/Libraries/Opus",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguCore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3492,7 +3558,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/NuguCore/Libraries/Opus",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguCore;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3525,7 +3591,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguClientKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3558,7 +3624,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguClientKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3587,7 +3653,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguLoginKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3616,7 +3682,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguLoginKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3649,7 +3715,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3682,7 +3748,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3720,7 +3786,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/JadeMarble/Libraries",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"TycheEpd\"",
@@ -3765,7 +3831,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/JadeMarble/Libraries",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"TycheEpd\"",
@@ -3809,7 +3875,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/KeenSense/Libraries",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"TycheWakeup\"",
@@ -3852,7 +3918,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/KeenSense/Libraries",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-l\"TycheWakeup\"",
@@ -4126,7 +4192,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguAgents;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -4158,7 +4224,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.9.2;
+				MARKETING_VERSION = 0.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sktelecom.romaine.NuguAgents;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

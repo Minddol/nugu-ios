@@ -24,6 +24,7 @@ import NuguCore
 import NuguAgents
 import NuguClientKit
 import NuguLoginKit
+import NuguUIKit
 
 final class NuguCentralManager {
     static let shared = NuguCentralManager()
@@ -75,6 +76,9 @@ final class NuguCentralManager {
         }
     }
     
+    // TODO: - Consider managing inside SDK
+    var isTextAgentInProcess = false
+    
     private init() {
     }
 }
@@ -86,10 +90,11 @@ extension NuguCentralManager {
         log.debug("")
         if supportServerInitiatedDirective {
             client.startReceiveServerInitiatedDirective()
+        } else {
+            client.stopReceiveServerInitiatedDirective()
         }
 
         NuguLocationManager.shared.startUpdatingLocation()
-        
     }
     
     func disable() {
@@ -211,7 +216,7 @@ private extension NuguCentralManager {
     func logoutAfterErrorHandling(sampleAppError: SampleAppError) {
         DispatchQueue.main.async { [weak self] in
             self?.client.audioPlayerAgent.stop()
-            NuguToastManager.shared.showToast(message: sampleAppError.errorDescription)
+            NuguToast.shared.showToast(message: sampleAppError.errorDescription)
             self?.popToRootViewController()
             switch sampleAppError {
             case .loginUnauthorized:

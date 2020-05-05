@@ -400,7 +400,7 @@ private extension ASRAgent {
         
             self?.asrDispatchQueue.async { [weak self] in
                 guard let self = self else { return }
-                guard let expectSpeech = self.expectSpeech else {
+                guard self.expectSpeech != nil else {
                     log.error("currentExpectSpeech is nil")
                     return
                 }
@@ -418,9 +418,7 @@ private extension ASRAgent {
                     })
                 self.expectingSpeechTimeout?.disposed(by: self.disposeBag)
 
-                var options = self.options
-                options.timeout = expectSpeech.timeout
-                self.startRecognition(initiator: .scenario, options: options, by: directive)
+                self.startRecognition(initiator: .scenario, options: self.options, by: directive)
             }
         }
     }

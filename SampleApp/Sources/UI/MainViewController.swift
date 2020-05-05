@@ -269,10 +269,6 @@ private extension MainViewController {
         voiceChromeDismissWorkItem?.cancel()
         nuguVoiceChrome.removeFromSuperview()
         nuguVoiceChrome = NuguVoiceChrome(frame: CGRect(x: 0, y: view.frame.size.height, width: view.frame.size.width, height: NuguVoiceChrome.recommendedHeight + SampleApp.bottomSafeAreaHeight))
-        nuguVoiceChrome.onCloseButtonClick = { [weak self] in
-            NuguCentralManager.shared.client.asrAgent.stopRecognition()
-            self?.dismissVoiceChrome()
-        }
         view.addSubview(nuguVoiceChrome)
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self = self else { return }
@@ -280,15 +276,60 @@ private extension MainViewController {
         }
     }
     
-    func dismissVoiceChrome() {
+    @objc func dismissVoiceChrome() {
+        view.gestureRecognizers = nil
+        
         voiceChromeDismissWorkItem?.cancel()
         
         UIView.animate(withDuration: 0.3, animations: { [weak self] in
             guard let self = self else { return }
             self.nuguVoiceChrome.transform = CGAffineTransform(translationX: 0.0, y: self.nuguVoiceChrome.bounds.height)
+            self.nuguButton.alpha = 1.0
         }, completion: { [weak self] _ in
             self?.nuguVoiceChrome.removeFromSuperview()
         })
+    }
+    
+    func setExampleChips() {
+        nuguVoiceChrome.setChipsData(
+            chipsData: [.action(text: "첫번째"), .action(text: "두번째"), .normal(text: "클래식 매니저 틀어줘"), .normal(text: "된장찌개 레시피 알려줘"), .normal(text: "멜론 탑100"), .normal(text: "템플릿 열어줘")],
+            onChipsSelect: { selectedChipsText in
+                guard let selectedChipsText = selectedChipsText,
+                    let window = UIApplication.shared.keyWindow else { return }
+                
+                let indicator = UIActivityIndicatorView(style: .whiteLarge)
+                indicator.color = .black
+                indicator.startAnimating()
+                indicator.center = window.center
+                indicator.startAnimating()
+                window.addSubview(indicator)
+                
+                NuguCentralManager.shared.isTextAgentInProcess = true
+                NuguCentralManager.shared.client.asrAgent.stopRecognition()
+                NuguCentralManager.shared.client.textAgent.requestTextInput(text: selectedChipsText) { [weak self] state in
+                    switch state {
+                    case .finished:
+                        NuguCentralManager.shared.isTextAgentInProcess = false
+                    case .error:
+                        NuguCentralManager.shared.isTextAgentInProcess = false
+                        self?.dismissVoiceChrome()
+                    default: break
+                    }
+                    DispatchQueue.main.async {
+                        indicator.removeFromSuperview()
+                    }
+                }
+            }
+        )
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+extension MainViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let touchLocation = touch.location(in: gestureRecognizer.view)
+        return !nuguVoiceChrome.frame.contains(touchLocation)
     }
 }
 
@@ -407,6 +448,7 @@ extension MainViewController: DialogStateDelegate {
     func dialogStateDidChange(_ state: DialogState, expectSpeech: ASRExpectSpeech?) {
         switch state {
         case .idle:
+            guard NuguCentralManager.shared.isTextAgentInProcess == false else { return }
             voiceChromeDismissWorkItem = DispatchWorkItem(block: { [weak self] in
                 self?.dismissVoiceChrome()
             })
@@ -416,7 +458,6 @@ extension MainViewController: DialogStateDelegate {
             DispatchQueue.main.async { [weak self] in
                 guard expectSpeech == nil else {
                     self?.nuguVoiceChrome.changeState(state: .speaking)
-                    self?.nuguVoiceChrome.minimize()
                     return
                 }
                 self?.dismissVoiceChrome()
@@ -429,7 +470,6 @@ extension MainViewController: DialogStateDelegate {
         case .recognizing:
             DispatchQueue.main.async { [weak self] in
                 self?.nuguVoiceChrome.changeState(state: .listeningActive)
-                self?.nuguVoiceChrome.maximize()
             }
         case .thinking:
             DispatchQueue.main.async { [weak self] in
