@@ -85,23 +85,29 @@ extension ASRBeepPlayer.BeepType {
         }
     }
     
-    func makeAudioPlayer() -> AVAudioPlayer? {
+    func makeAudioPlayer() -> MediaPlayer? {
         switch self {
         case .start:
-            guard let startBeepResourceUrl = ASRBeepPlayer.resourcesUrl.startBeepResourceUrl else {
+            guard let url = ASRBeepPlayer.resourcesUrl.startBeepResourceUrl else {
                 return nil
             }
-            return try? AVAudioPlayer(contentsOf: startBeepResourceUrl, fileTypeHint: AVFileType.wav.rawValue)
+            let mediaPlayer = MediaPlayer()
+            mediaPlayer.setSource(url: url)
+            return mediaPlayer
         case .success:
-            guard let successBeepResourceUrl = ASRBeepPlayer.resourcesUrl.successBeepResourceUrl else {
+            guard let url = ASRBeepPlayer.resourcesUrl.successBeepResourceUrl else {
                 return nil
             }
-            return try? AVAudioPlayer(contentsOf: successBeepResourceUrl, fileTypeHint: AVFileType.wav.rawValue)
+            let mediaPlayer = MediaPlayer()
+            mediaPlayer.setSource(url: url)
+            return mediaPlayer
         case .fail:
-            guard let failBeepResourceUrl = ASRBeepPlayer.resourcesUrl.failBeepResourceUrl else {
+            guard let url = ASRBeepPlayer.resourcesUrl.failBeepResourceUrl else {
                 return nil
             }
-            return try? AVAudioPlayer(contentsOf: failBeepResourceUrl, fileTypeHint: AVFileType.wav.rawValue)
+            let mediaPlayer = MediaPlayer()
+            mediaPlayer.setSource(url: url)
+            return mediaPlayer
         }
     }
 }
@@ -111,16 +117,16 @@ extension ASRBeepPlayer.BeepType {
 private extension ASRBeepPlayer {
     func play(type: BeepType) {
         beepQueue.async { [weak self] in
-            let player: AVAudioPlayer?
+            let player: MediaPlayer?
             switch type {
             case .fail: player = self?.failBeepPlayer
             case .start: player = self?.startBeepPlayer
             case .success: player = self?.successBeepPlayer
             }
             
-            if player?.isPlaying == false {
+//            if player?.isPlaying == false {
                 player?.play()
-            }
+//            }
         }
     }
 }
